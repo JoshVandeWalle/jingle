@@ -18,7 +18,7 @@ public class UserDataService implements DataServiceInterface<User> {
 	 * @see DataServiceInterface create
 	 */
 	public int create(User user) {
-		Database db = new Database();
+		/*Database db = new Database();
 		Connection conn = null;
 
 		// insert credentials
@@ -75,7 +75,8 @@ public class UserDataService implements DataServiceInterface<User> {
 				}
 			}
 		}
-		return result;
+		return result;*/
+		return 0;
 	}
 	
 	/**
@@ -97,7 +98,7 @@ public class UserDataService implements DataServiceInterface<User> {
 	 * @return user	user that is found
 	 */
 	public User readByCredentials(User user) {
-		Database db = new Database();
+		/*Database db = new Database();
 		Connection conn = null;
 
 		String sql = "SELECT id " + "FROM credentials " + "WHERE username = ? AND password = ? " + "LIMIT 1";
@@ -145,7 +146,8 @@ public class UserDataService implements DataServiceInterface<User> {
 				}
 			}
 		}
-		return user;
+		return user;*/
+		return new User();
 	}
 
 	/**

@@ -1,0 +1,46 @@
+.main-button {
+	background-color: red;
+	color: white;
+	height: 20px;
+	cursor: pointer;
+	border: none;
+}
+
+.welcome-msg {
+	float: left!important;
+	color: white;
+	font-size: 20px;
+	font-weight: bold;
+	padding-top: 10px!important;
+}
+
+li {
+	float: right;
+}
+
+ul {
+	background-color: red;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+a {
+	display: block;
+	padding 8px;
+	background-color: red;
+}
+
+li a {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+li a:hover {
+	background-color: pink;
+	cursor: pointer;
+}

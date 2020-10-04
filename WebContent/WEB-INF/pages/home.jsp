@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	Home Page
+	<p>Welcome ${user.credentials.username} this is the home page.</p>
 
 </body>
 </html>

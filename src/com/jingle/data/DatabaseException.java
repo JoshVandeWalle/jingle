@@ -1,5 +1,10 @@
 package com.jingle.data;
 
+/**
+ * @author Henry Harvey
+ * The DatabaseException creates a custom exception for database errors
+ */
+
 // unchecked exception for handling database errors
 public class DatabaseException extends RuntimeException {
 

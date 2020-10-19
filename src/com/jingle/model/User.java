@@ -3,24 +3,31 @@ package com.jingle.model;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+/**
+ * @author Henry Harvey
+ * The User model is the user object model of the application
+ */
+
 public class User {
 	private int id;
 
-	@Size(min = 2, max = 20, message = "first name must be between 2 and 20 characters long")
+	@Size(min = 2, max = 20, message = "First name must be between 2 and 20 characters long.")
 	private String firstName;
 
-	@Size(min = 2, max = 20, message = "last name must be between 2 and 20 characters long")
+	@Size(min = 2, max = 20, message = "Last name must be between 2 and 20 characters long.")
 	private String lastName;
 
-	@Size(min = 10, max = 40, message = "email must be between 10 and 40 characters long")
+	@Size(min = 10, max = 40, message = "Email must be between 10 and 40 characters long.")
 	private String email;
 
-	@Size(min = 10, max = 10, message = "phone number must be 10 characters long")
-	//@Pattern(regexp = "[\\d]{6}", message = "phone number must only include numbers")
+	@Size(min = 10, max = 10, message = "Phone number must be 10 characters long.")
+	// @Pattern(regexp = "[\\d]{6}", message = "phone number must only include
+	// numbers")
 	private String phone;
 
 	private Credentials credentials;
-	
+
+	// Constructor with all fields
 	public User(int id, String firstName, String lastName, String email, String phone, Credentials credentials) {
 		this.id = id;
 		this.firstName = firstName;
@@ -30,6 +37,7 @@ public class User {
 		this.credentials = credentials;
 	}
 
+	// Constructor with all fields except id's
 	public User(String firstName, String lastName, String email, String phone, Credentials credentials) {
 		this.id = -1;
 		this.firstName = firstName;
@@ -39,13 +47,14 @@ public class User {
 		this.credentials = credentials;
 	}
 
+	// Default constructor
 	public User() {
 		super();
 		this.id = -1;
-		this.firstName = "";
-		this.lastName = "";
-		this.email = "";
-		this.phone = "";
+		this.firstName = "first name";
+		this.lastName = "last name";
+		this.email = "email";
+		this.phone = "1234567890";
 		this.credentials = null;
 	}
 
@@ -95,6 +104,12 @@ public class User {
 
 	public void setCredentials(Credentials credentials) {
 		this.credentials = credentials;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", phone=" + phone + ", credentials=" + credentials + "]";
 	}
 
 }

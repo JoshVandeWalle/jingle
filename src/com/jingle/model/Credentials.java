@@ -2,16 +2,19 @@ package com.jingle.model;
 
 import javax.validation.constraints.Size;
 
+/**
+ * @author Henry Harvey
+ * The Credentials model contains login information for the User model
+ */
+
 public class Credentials {
-	@Size(min = 2, max = 20, message = "username must be between 2 and 20 characters long")
+	@Size(min = 2, max = 20, message = "Username must be between 2 and 20 characters long.")
 	private String username;
 
-	@Size(min = 2, max = 20, message = "password must be between 2 and 20 characters long")
+	@Size(min = 2, max = 20, message = "Password must be between 2 and 20 characters long.")
 	private String password;
 
 	private int role;
-	
-	
 
 	public Credentials() {
 		super();
@@ -54,6 +57,11 @@ public class Credentials {
 
 	public void setRole(int role) {
 		this.role = role;
+	}
+
+	@Override
+	public String toString() {
+		return "Credentials [username=" + username + ", password=" + password + ", role=" + role + "]";
 	}
 
 }

@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * @author Henry Harvey
+ * The Database model makes simplifies database connection
+ */
+
 public class Database {
 
 	private String url = "jdbc:mysql://localhost:3306/jingle";

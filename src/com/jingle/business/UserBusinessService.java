@@ -3,6 +3,11 @@ package com.jingle.business;
 import com.jingle.data.UserDataService;
 import com.jingle.model.User;
 
+/**
+ * @author Henry Harvey
+ * The UserBusinessService handles the business logic of the application involving users
+ */
+
 public class UserBusinessService {
 
 	/**

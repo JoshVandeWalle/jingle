@@ -9,10 +9,12 @@ import java.sql.Statement;
 import com.jingle.model.Credentials;
 import com.jingle.model.User;
 
-public class UserDataService implements DataServiceInterface<User> {
+/**
+ * @author Henry Harvey
+ * The UserDataService modifies and retrieves data from the users and credentials databases
+ */
 
-	// return value for methods that do not return a User
-	int result = 0;
+public class UserDataService implements DataServiceInterface<User> {
 
 	/**
 	 * @see DataServiceInterface create

@@ -1,5 +1,10 @@
 package com.jingle.data;
 
+/**
+ * @author Henry Harvey
+ * The DataServiceInterface establishes the required methods for data services
+ */
+
 public interface DataServiceInterface<T> {
 
 	/**

@@ -87,7 +87,7 @@ public class UserController
 		
 		if (user == null)
 		{
-			return new ModelAndView("home", "credentials", credentials);
+			return new ModelAndView("home", "user", user);
 		}
 		
 		else 

@@ -3,7 +3,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>CST-341 In-Class Activity</title>
+	<title>Jingle</title>
 	
 	<spring:url value="/resources/css/main.css" var="mainCss" />
 	<spring:url value="/resources/js/main.js" var="mainJs" />

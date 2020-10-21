@@ -26,21 +26,14 @@ public class UserBusinessService {
 	/**
 	 * Takes in a user
 	 * Creates a UserDataService
-	 * Sets a new user equal to the ds readByCredentials method with user as parameter
-	 * If new user is not equal to null, return 0
-	 * Else, return -1
+	 * Returns the ds readByCredentials method with user as parameter
 	 * 
-	 * @param user	user to register
-	 * @return int	int result
+	 * @param user	user to login
+	 * @return User	user that logged in
 	 */
-	public int login(User user) {
+	public User login(User user) {
 		UserDataService ds = new UserDataService();
-		User foundUser = ds.readByCredentials(user);
-		if (foundUser != null) {
-			return 0;
-		} else {
-			return -1;
-		}
+		return ds.readByCredentials(user);
 	}
 
 }

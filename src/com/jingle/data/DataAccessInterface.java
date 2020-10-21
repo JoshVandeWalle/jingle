@@ -5,7 +5,7 @@ package com.jingle.data;
  * The DataServiceInterface establishes the required methods for data services
  */
 
-public interface DataServiceInterface<T> {
+public interface DataAccessInterface<T> {
 
 	/**
 	 * Takes in an object

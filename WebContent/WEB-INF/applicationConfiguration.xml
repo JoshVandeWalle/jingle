@@ -1,22 +1,32 @@
-<beans
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://www.springframework.org/schema/beans">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd       
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
-	<context:component-scan base-package="com.jingle" />
+	<context:component-scan
+		base-package="com.jingle" />
 
 	<mvc:annotation-driven />
-	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"/>
+	<mvc:resources mapping="/resources/**"
+		location="/WEB-INF/resources/" />
 
-	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/pages/{1}" />
-		<property name="suffix" value=".jsp" />
-	</bean> -->
-	
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver"/>
- 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		<property name="prefix" value="/WEB-INF/pages/{1}" /> <property name="suffix" 
+		value=".jsp" /> </bean> -->
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" />
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<property name="definitions">
 			<list>
 				<value>/WEB-INF/layouts/layouts.xml</value>
@@ -25,5 +35,21 @@
 		</property>
 	</bean>
 
-</beans>
+	<!-- scope="session" -->
+	<!-- scope="singleton" -->
+	<!-- scope="prototype" -->
+	<!-- scope="request" -->
+	
+	<bean id="songBusinessService"
+		class="com.jingle.business.SongBusinessService" init-method="init"
+		destroy-method="destroy" scope="session">
+		<aop:scoped-proxy proxy-target-class="false" />
+	</bean>
+	
+	<bean id="songDataService"
+		class="com.jingle.data.SongDataService" init-method="init"
+		destroy-method="destroy" scope="session">
+		<aop:scoped-proxy proxy-target-class="false" />
+	</bean>
 
+</beans>

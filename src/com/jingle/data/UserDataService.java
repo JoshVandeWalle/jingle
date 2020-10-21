@@ -14,25 +14,25 @@ import com.jingle.model.User;
  * The UserDataService modifies and retrieves data from the users and credentials databases
  */
 
-public class UserDataService implements DataServiceInterface<User> {
-
+public class UserDataService implements DataAccessInterface<User> {
+	
 	/**
-	 * @see DataServiceInterface create
+	 * @see DataAccessInterface create
 	 */
 	public int create(User user) {
-		/*Database db = new Database();
+		int result = 0;
+		Database db = new Database();
 		Connection conn = null;
 
 		// insert credentials
 		String sql = "INSERT INTO credentials" + "(username, password)" + "VALUES (?,?)";
 
 		// insert user
-		String sql2 = "INSERT INTO users" + "(firstname, lastname, email, phone, credentials_ID)"
+		String sql2 = "INSERT INTO users" + "(firstname, lastname, email, phone, credentials_id)"
 				+ "VALUES (?,?,?,?,?)";
 
 		try {
 			conn = db.getConnection();
-			System.out.println("Connection Success!");
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, user.getCredentials().getUsername());
 			stmt.setString(2, user.getCredentials().getPassword());
@@ -77,8 +77,7 @@ public class UserDataService implements DataServiceInterface<User> {
 				}
 			}
 		}
-		return result;*/
-		return 0;
+		return result;
 	}
 	
 	/**
@@ -100,16 +99,15 @@ public class UserDataService implements DataServiceInterface<User> {
 	 * @return user	user that is found
 	 */
 	public User readByCredentials(User user) {
-		/*Database db = new Database();
+		Database db = new Database();
 		Connection conn = null;
 
 		String sql = "SELECT id " + "FROM credentials " + "WHERE username = ? AND password = ? " + "LIMIT 1";
 
-		String sql2 = "SELECT * " + "FROM users " + "WHERE credentials_ID = ? " + "LIMIT 1";
+		String sql2 = "SELECT * " + "FROM users " + "WHERE credentials_id = ? " + "LIMIT 1";
 
 		try {
 			conn = db.getConnection();
-			System.out.println("Connection Success!");
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, user.getCredentials().getUsername());
 			stmt.setString(2, user.getCredentials().getPassword());
@@ -121,12 +119,13 @@ public class UserDataService implements DataServiceInterface<User> {
 			}
 			else {
 				user = null;
-				throw new SQLException("Reading user failed. Could not find credentials.");
+				//throw new SQLException("Reading user failed. Could not find credentials.");
 			}
 
 			PreparedStatement stmt2 = conn.prepareStatement(sql2);
 			stmt2.setInt(1, credId);
 			ResultSet rs2 = stmt2.executeQuery();
+			
 			if (rs2.last()) {
 				user = new User(rs2.getInt("id"), rs2.getString("firstname"), rs2.getString("lastname"),
 						rs2.getString("email"), rs2.getString("phone"),
@@ -134,9 +133,10 @@ public class UserDataService implements DataServiceInterface<User> {
 			}
 			else {
 				user = null;
-				throw new SQLException("Reading user failed. Could not find user information.");
+				//throw new SQLException("Reading user failed. Could not find user information.");
 			}
 			rs.close();
+			rs2.close();
 		} catch (java.sql.SQLException e) {
 			throw new DatabaseException(e);
 		} finally {
@@ -148,8 +148,7 @@ public class UserDataService implements DataServiceInterface<User> {
 				}
 			}
 		}
-		return user;*/
-		return new User();
+		return user;
 	}
 
 	/**

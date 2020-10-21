@@ -83,15 +83,16 @@ public class UserController
 		}
 		
 		User user = new User(-1, "", "", "", "", credentials);
+		user = service.login(user);
 		
-		if (service.login(user) == 0)
+		if (user == null)
 		{
 			return new ModelAndView("home", "credentials", credentials);
 		}
 		
 		else 
 		{
-			return new ModelAndView("login", "credentials", credentials);
+			return new ModelAndView("login", "credentials", user.getCredentials());
 		}
 	}
 	

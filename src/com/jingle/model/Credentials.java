@@ -18,7 +18,7 @@ public class Credentials {
 
 	public Credentials() {
 		super();
-		this.username = "";
+		this.username = "username";
 		this.password = "";
 		this.role = -1;
 	}

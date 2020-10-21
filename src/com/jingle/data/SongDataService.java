@@ -15,10 +15,10 @@ import com.jingle.model.Song;
  * The SongDataService modifies and retrieves data from the songs database
  */
 
-public class SongDataService implements DataServiceInterface<Song> {
+public class SongDataService implements DataAccessInterface<Song> {
 
 	/**
-	 * @see DataServiceInterface create
+	 * @see DataAccessInterface create
 	 */
 	public int create(Song song) {
 		return 0;

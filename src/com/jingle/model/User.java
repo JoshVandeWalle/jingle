@@ -53,7 +53,7 @@ public class User {
 		this.id = -1;
 		this.firstName = "first name";
 		this.lastName = "last name";
-		this.email = "email";
+		this.email = "email@email.com";
 		this.phone = "1234567890";
 		this.credentials = null;
 	}

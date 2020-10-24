@@ -70,7 +70,6 @@ public class SongController {
 	{
 		try
 		{
-			System.out.println(httpSession.getAttribute("userId"));
 			song.setUsers_id(Integer.parseInt(httpSession.getAttribute("userId").toString()));
 			
 			// pass control to business layer to add song to database and catch result flag

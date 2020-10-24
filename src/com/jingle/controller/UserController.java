@@ -104,7 +104,6 @@ public class UserController
 		else 
 		{
 			httpSession.setAttribute("userId", user.getId());
-			System.out.println(httpSession.getAttribute("userId"));
 			return new ModelAndView("home", "credentials", user.getCredentials());
 		}
 	}

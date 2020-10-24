@@ -40,15 +40,24 @@
 	<!-- scope="prototype" -->
 	<!-- scope="request" -->
 	
+	<bean id="userController" class="com.jingle.controller.UserController" >
+		<property name="userService" ref="userService"/>
+	</bean>
+	
+	<bean id="userService"
+		class="com.jingle.business.UserBusinessService" scope="session">
+		<aop:scoped-proxy proxy-target-class="false" />
+	</bean>
+	<bean id="songController" class="com.jingle.controller.SongController" >
+		<property name="songService" ref="songBusinessService"/>
+	</bean>
 	<bean id="songBusinessService"
-		class="com.jingle.business.SongBusinessService" init-method="init"
-		destroy-method="destroy" scope="session">
+		class="com.jingle.business.SongBusinessService" scope="session">
 		<aop:scoped-proxy proxy-target-class="false" />
 	</bean>
 	
 	<bean id="songDataService"
-		class="com.jingle.data.SongDataService" init-method="init"
-		destroy-method="destroy" scope="session">
+		class="com.jingle.data.SongDataService" scope="session">
 		<aop:scoped-proxy proxy-target-class="false" />
 	</bean>
 	

@@ -1,5 +1,6 @@
 package com.jingle.controller;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jingle.business.UserBusinessInterface;
 import com.jingle.business.UserBusinessService;
 import com.jingle.model.Credentials;
 import com.jingle.model.User;
@@ -25,8 +27,17 @@ import com.jingle.model.User;
 @RequestMapping("/user")
 public class UserController 
 {
-//	@Autowired 
-	UserBusinessService service; 
+	@Autowired
+	private HttpSession httpSession;
+	
+	UserBusinessInterface userService; 
+	
+	@Autowired
+	public void setUserService(UserBusinessInterface userService)
+	{
+		this.userService = userService;
+	}
+	
 	
 	/**
 	 * this method manages behavior related to registration
@@ -37,16 +48,16 @@ public class UserController
 	@PostMapping("/handleRegister")
 	public ModelAndView handleRegister(@Valid @ModelAttribute("user") User user, BindingResult result)
 	{
-		service = new UserBusinessService();
+		userService = new UserBusinessService();
 		
 		if (result.hasErrors())
 		{
 			return new ModelAndView("register", "user", user);
 		}
 		
-		if (service.register(user) == 0)
+		if (userService.register(user) == 0)
 		{
-			return new ModelAndView("home", "user", user);
+			return new ModelAndView("login", "credentials", user.getCredentials());
 		}
 		
 		else 
@@ -75,7 +86,7 @@ public class UserController
 	@PostMapping("/handleLogin")
 	public ModelAndView handleLogin(@Valid @ModelAttribute("credentials") Credentials credentials, BindingResult result)
 	{
-		service = new UserBusinessService();
+		userService = new UserBusinessService();
 		
 		if (result.hasErrors())
 		{
@@ -83,16 +94,18 @@ public class UserController
 		}
 		
 		User user = new User(-1, "", "", "", "", credentials);
-		user = service.login(user);
+		user = userService.login(user);
 		
 		if (user == null)
 		{
-			return new ModelAndView("home", "user", user);
+			return new ModelAndView("login", "user", user);
 		}
 		
 		else 
 		{
-			return new ModelAndView("login", "credentials", user.getCredentials());
+			httpSession.setAttribute("userId", user.getId());
+			System.out.println(httpSession.getAttribute("userId"));
+			return new ModelAndView("home", "credentials", user.getCredentials());
 		}
 	}
 	

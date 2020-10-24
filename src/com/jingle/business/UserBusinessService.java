@@ -1,5 +1,8 @@
 package com.jingle.business;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.jingle.data.DataAccessInterface;
 import com.jingle.data.UserDataService;
 import com.jingle.model.User;
 
@@ -8,7 +11,7 @@ import com.jingle.model.User;
  * The UserBusinessService handles the business logic of the application involving users
  */
 
-public class UserBusinessService {
+public class UserBusinessService implements UserBusinessInterface {
 
 	/**
 	 * Takes in a user

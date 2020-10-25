@@ -103,7 +103,7 @@ public class UserController
 		
 		else 
 		{
-			httpSession.setAttribute("userId", user.getId());
+			httpSession.setAttribute("user", user);
 			return new ModelAndView("home", "credentials", user.getCredentials());
 		}
 	}

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jingle.business.SongBusinessInterface;
 import com.jingle.model.Song;
+import com.jingle.model.User;
 
 /**
  * 
@@ -79,7 +80,15 @@ public class SongController {
 	{
 		try
 		{
-			song.setUsers_id(Integer.parseInt(httpSession.getAttribute("userId").toString()));
+			// set song ID based on session user
+			song.setUsers_id(((User) httpSession.getAttribute("user")).getId());
+			
+			// check if the user provided an artist
+			if (song.getArtist() == null || song.getArtist().equals(""))
+			{
+				// use the username as default
+				song.setArtist(((User) httpSession.getAttribute("user")).getCredentials().getUsername());
+			}
 			
 			// pass control to business layer to add song to database and catch result flag
 			int result = songService.addSong(song);

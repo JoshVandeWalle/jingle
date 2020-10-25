@@ -39,6 +39,10 @@ public class SongController {
 		this.songService = songService;
 	}
 	
+	/**
+	 * this method manages behavior related to displaying all songs
+	 * @return ModelAndView the container with the correct view and data
+	 */
 	@GetMapping("/")
 	public ModelAndView handleRetrieveAll()
 	{
@@ -65,6 +69,11 @@ public class SongController {
 		}
 	}
 	
+	/**
+	 * This method manages behavior related to adding a new song
+	 * @param song the new song
+	 * @return ModelAndView the container with the correct view and data
+	 */
 	@PostMapping("/handleUpload")
 	public ModelAndView handleUploadSong(@Valid @ModelAttribute("song") Song song)
 	{
@@ -92,6 +101,10 @@ public class SongController {
 		}
 	}
 	
+	/**
+	 * This method manages behavior related to displaying the user page.
+	 * @return ModelAndView the container with the correct view and data
+	 */
 	@GetMapping("/handleDisplayUploadPage")
 	public ModelAndView handleDisplayUploadPage()
 	{

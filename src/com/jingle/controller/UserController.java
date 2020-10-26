@@ -103,7 +103,7 @@ public class UserController
 		
 		else 
 		{
-			httpSession.setAttribute("user", user);
+			httpSession.setAttribute("sessionUser", user);
 			return new ModelAndView("home", "credentials", user.getCredentials());
 		}
 	}
@@ -131,6 +131,7 @@ public class UserController
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("login");
 		mav.addObject("credentials", new Credentials());
+		httpSession.removeAttribute("sessionUser");
 		return mav;
 	}
 	

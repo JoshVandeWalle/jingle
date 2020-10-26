@@ -12,3 +12,4 @@
 			<tr><td></td><td><form:errors path="*"/></td></tr>
 		</table>
 	</form:form>
+	Already have an account? <a href="../user/login">Sign in.</a>

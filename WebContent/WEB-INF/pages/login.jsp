@@ -8,3 +8,4 @@
 			<tr><td></td><td><form:errors path="*"/></td></tr>
 		</table>
 	</form:form>
+	New to Jingle? <a href="../user/register">Sign up.</a>

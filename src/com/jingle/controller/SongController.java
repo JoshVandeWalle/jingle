@@ -81,13 +81,13 @@ public class SongController {
 		try
 		{
 			// set song ID based on session user
-			song.setUsers_id(((User) httpSession.getAttribute("user")).getId());
+			song.setUsers_id(((User) httpSession.getAttribute("sessionUser")).getId());
 			
 			// check if the user provided an artist
 			if (song.getArtist() == null || song.getArtist().equals(""))
 			{
 				// use the username as default
-				song.setArtist(((User) httpSession.getAttribute("user")).getCredentials().getUsername());
+				song.setArtist(((User) httpSession.getAttribute("sessionUser")).getCredentials().getUsername());
 			}
 			
 			// pass control to business layer to add song to database and catch result flag

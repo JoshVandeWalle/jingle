@@ -26,12 +26,6 @@ ul {
 	overflow: hidden;
 }
 
-a {
-	display: block;
-	padding 8px;
-	background-color: red;
-}
-
 li a {
 	display: block;
 	color: white;

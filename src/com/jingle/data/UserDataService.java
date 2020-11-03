@@ -1,85 +1,72 @@
 package com.jingle.data;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 
-import com.jingle.model.Credentials;
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+
 import com.jingle.model.User;
 
 /**
- * @author Henry Harvey
+ * @author Henry Harvey 
  * The UserDataService modifies and retrieves data from the users and credentials databases
  */
 
-public class UserDataService implements DataAccessInterface<User> {
-	
+public class UserDataService implements UserDataInterface {
+
+	private DataSource dataSource;
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+	}
+
 	/**
-	 * @see DataAccessInterface create
+	 * Takes in a user. 
+	 * Inserts credentials and retrieves generated key. 
+	 * If not created, return -1. 
+	 * Inserts user using generated key. 
+	 * If not created, return -2. 
+	 * Return 1. 
+	 * 
+	 * @param user	user to create
+	 * @return int	result
 	 */
 	public int create(User user) {
-		int result = 0;
-		Database db = new Database();
-		Connection conn = null;
-
 		// insert credentials
-		String sql = "INSERT INTO credentials" + "(username, password)" + "VALUES (?,?)";
+		String sql1 = "INSERT INTO credentials (username, password) VALUES (:username, :password)";
+
+		BeanPropertySqlParameterSource params1 = new BeanPropertySqlParameterSource(user.getCredentials());
+
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		int result1 = namedParameterJdbcTemplate.update(sql1, params1, keyHolder);
+
+		if (result1 != 1) {
+			return -1;
+		}
 
 		// insert user
-		String sql2 = "INSERT INTO users" + "(firstname, lastname, email, phone, credentials_id)"
-				+ "VALUES (?,?,?,?,?)";
+		String sql2 = "INSERT INTO users (firstname, lastname, email, phone, credentials_id) VALUES (:firstName, :lastName, :email, :phone, :credentials_id)";
 
-		try {
-			conn = db.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, user.getCredentials().getUsername());
-			stmt.setString(2, user.getCredentials().getPassword());
+		user.setCredentials_id(keyHolder.getKey().intValue());
+		BeanPropertySqlParameterSource params2 = new BeanPropertySqlParameterSource(user);
 
-			int first = stmt.executeUpdate();
+		int result2 = namedParameterJdbcTemplate.update(sql2, params2);
 
-			if (first != 1) {
-				result = -1;
-				throw new SQLException("Creating user failed. One row not added for credentials.");
-			}
-
-			// get credentials row ID
-			int credId;
-			try (ResultSet rs = stmt.getGeneratedKeys()) {
-				if (rs.next()) {
-					credId = rs.getInt(1);
-				} else {
-					throw new SQLException("Creating user failed, no ID obtained.");
-				}
-			}
-
-			PreparedStatement stmt2 = conn.prepareStatement(sql2);
-			stmt2.setString(1, user.getFirstName());
-			stmt2.setString(2, user.getLastName());
-			stmt2.setString(3, user.getEmail());
-			stmt2.setString(4, user.getPhone());
-			stmt2.setInt(5, credId);
-			int second = stmt2.executeUpdate();
-
-			if (second != 1) {
-				result = -2;
-				throw new SQLException("Creating user failed. One row not added for user.");
-			}
-		} catch (java.sql.SQLException e) {
-			throw new DatabaseException(e);
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (java.sql.SQLException e) {
-					throw new DatabaseException(e);
-				}
-			}
+		if (result2 != 1) {
+			return -2;
 		}
-		return result;
+
+		return 1;
 	}
-	
+
 	/**
 	 * not implemented
 	 */
@@ -87,68 +74,48 @@ public class UserDataService implements DataAccessInterface<User> {
 		return null;
 	}
 
-	
 	/**
-	 * Takes in a user
-	 * Connects to the database
-	 * Creates and executes a sql statement
-	 * Sets a user equal to the result set
-	 * Returns the user
+	 * Takes in a user with credentials. 
+	 * Selects credentials id from credential username and password. 
+	 * If not selected, return null. 
+	 * Selects user using credentials id. 
+	 * If not selected, return null. 
+	 * Return selected user. 
 	 * 
-	 * @param user	user to find
-	 * @return user	user that is found
+	 * @param user 	user to read
+	 * @return User found user
 	 */
 	public User readByCredentials(User user) {
-		Database db = new Database();
-		Connection conn = null;
+		String sql1 = "SELECT id FROM credentials WHERE username = :username AND password = :password LIMIT 1";
 
-		String sql = "SELECT id " + "FROM credentials " + "WHERE username = ? AND password = ? " + "LIMIT 1";
+		BeanPropertySqlParameterSource params1 = new BeanPropertySqlParameterSource(user.getCredentials());
 
-		String sql2 = "SELECT * " + "FROM users " + "WHERE credentials_id = ? " + "LIMIT 1";
+		SqlRowSet srs1 = namedParameterJdbcTemplate.queryForRowSet(sql1, params1);
 
-		try {
-			conn = db.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, user.getCredentials().getUsername());
-			stmt.setString(2, user.getCredentials().getPassword());
-
-			int credId = -1;
-			ResultSet rs = stmt.executeQuery();
-			if (rs.last()) {
-				credId = rs.getInt(1);
-			}
-			else {
-				user = null;
-				//throw new SQLException("Reading user failed. Could not find credentials.");
-			}
-
-			PreparedStatement stmt2 = conn.prepareStatement(sql2);
-			stmt2.setInt(1, credId);
-			ResultSet rs2 = stmt2.executeQuery();
-			
-			if (rs2.last()) {
-				user = new User(rs2.getInt("id"), rs2.getString("firstname"), rs2.getString("lastname"),
-						rs2.getString("email"), rs2.getString("phone"),
-						new Credentials(user.getCredentials().getUsername(), user.getCredentials().getPassword()));
-			}
-			else {
-				user = null;
-				//throw new SQLException("Reading user failed. Could not find user information.");
-			}
-			rs.close();
-			rs2.close();
-		} catch (java.sql.SQLException e) {
-			throw new DatabaseException(e);
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (java.sql.SQLException e) {
-					throw new DatabaseException(e);
-				}
-			}
+		if (!srs1.last()) {
+			return null;
 		}
-		return user;
+
+		String sql2 = "SELECT * FROM users WHERE credentials_id = :credentials_id LIMIT 1";
+
+		user.setCredentials_id(srs1.getInt("id"));
+		BeanPropertySqlParameterSource params2 = new BeanPropertySqlParameterSource(user);
+
+		SqlRowSet srs2 = namedParameterJdbcTemplate.queryForRowSet(sql2, params2);
+
+		if (!srs2.last()) {
+			return null;
+		}
+
+		return new User(srs2.getInt("id"),srs2.getString("firstname"), srs2.getString("lastname"), srs2.getString("email"),
+				srs2.getString("phone"), user.getCredentials());
+	}
+
+	/**
+	 * not implemented
+	 */
+	public List<User> readAll() {
+		return null;
 	}
 
 	/**

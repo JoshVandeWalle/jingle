@@ -1,6 +1,5 @@
 package com.jingle.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -19,123 +18,116 @@ import com.jingle.model.Song;
 import com.jingle.model.User;
 
 /**
- * 
  * @author Josh Van de Walle
- * 
- * the SongController manages behavior related to songs
- *
+ *         the SongController manages behavior related to songs
  */
+
 @Controller
 @RequestMapping("/song")
 public class SongController {
-	
-	SongBusinessInterface songService;
-	
+
 	@Autowired
 	private HttpSession httpSession;
-	
+
+	SongBusinessInterface songBusinessService;
+
 	@Autowired
-	public void setSongService(SongBusinessInterface songService)
-	{
-		this.songService = songService;
+	public void setSongBusinessService(SongBusinessInterface songBusinessService) {
+		this.songBusinessService = songBusinessService;
 	}
-	
+
 	/**
 	 * this method manages behavior related to displaying all songs
+	 * 
 	 * @return ModelAndView the container with the correct view and data
 	 */
 	@GetMapping("/")
-	public ModelAndView handleRetrieveAll()
-	{
-		try 
-		{
-			// initialize the Model and View container 
+	public ModelAndView handleRetrieveAll() {
+		try {
+			// initialize the Model and View container
 			ModelAndView mav = new ModelAndView();
 			// provide view name
 			mav.setViewName("songIndex");
-			
+
 			// pass control to business layer to get all the songs in the database
-			List<Song> songList = songService.getAllSongs();
-			
+			List<Song> songList = songBusinessService.getAllSongs();
+
 			// pass the list of songs to the view for display
 			mav.addObject("list", songList);
-			
-			// return the Model and View container so the framework can display the right view and data
+
+			// return the Model and View container so the framework can display the right
+			// view and data
 			return mav;
 		}
-		
-		catch (Exception e)
-		{
+
+		catch (Exception e) {
 			return new ModelAndView("error");
 		}
 	}
-	
+
 	/**
 	 * This method manages behavior related to adding a new song
+	 * 
 	 * @param song the new song
 	 * @return ModelAndView the container with the correct view and data
 	 */
 	@PostMapping("/handleUpload")
-	public ModelAndView handleUploadSong(@Valid @ModelAttribute("song") Song song)
-	{
-		try
-		{
+	public ModelAndView handleUploadSong(@Valid @ModelAttribute("song") Song song) {
+		try {
 			// set song ID based on session user
 			song.setUsers_id(((User) httpSession.getAttribute("sessionUser")).getId());
-			
+
 			// check if the user provided an artist
-			if (song.getArtist() == null || song.getArtist().equals(""))
-			{
-				// use the username as default
-				song.setArtist(((User) httpSession.getAttribute("sessionUser")).getCredentials().getUsername());
-			}
-			
+			/*
+			 * if (song.getArtist() == null || song.getArtist().equals("")) { // use the
+			 * username as default song.setArtist(((User)
+			 * httpSession.getAttribute("sessionUser")).getCredentials().getUsername()); }
+			 */
+
 			// pass control to business layer to add song to database and catch result flag
-			int result = songService.addSong(song);
-			
+			int result = songBusinessService.uploadSong(song);
+
 			// if the song wasn't added successfully
-			if (result != 0)
-			{
+			if (result != 1) {
 				ModelAndView mav = new ModelAndView();
 				mav.setViewName("error");
 				return mav;
 			}
-			
+
 			return this.handleRetrieveAll();
 		}
-		
-		catch (Exception e)
-		{
+
+		catch (Exception e) {
 			return new ModelAndView("error");
 		}
 	}
-	
+
 	/**
 	 * This method manages behavior related to displaying the user page.
+	 * 
 	 * @return ModelAndView the container with the correct view and data
 	 */
 	@GetMapping("/handleDisplayUploadPage")
-	public ModelAndView handleDisplayUploadPage()
-	{
-		try 
-		{
-			// initialize the Model and View container 
+	public ModelAndView handleDisplayUploadPage() {
+		try {
+			// initialize the Model and View container
 			ModelAndView mav = new ModelAndView();
 			// provide view name
 			mav.setViewName("songUpload");
-			
+
 			// provided the Song object to be created
-			mav.addObject("song", new Song());
-			
-			// return the Model and View container so the framework can display the right view and data
+			Song song = new Song();
+			song.setArtist(((User) httpSession.getAttribute("sessionUser")).getCredentials().getUsername());
+			mav.addObject("song", song);
+
+			// return the Model and View container so the framework can display the right
+			// view and data
 			return mav;
 		}
-		
-		catch (Exception e)
-		{
+
+		catch (Exception e) {
 			return new ModelAndView("error");
 		}
 	}
-	
-	
+
 }

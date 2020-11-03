@@ -3,8 +3,8 @@ package com.jingle.model;
 import javax.validation.constraints.Size;
 
 /**
- * @author Henry Harvey The Song model is the product object model of the
- *         application
+ * @author Henry Harvey 
+ * The Song model is the product object model of the application
  */
 
 public class Song {
@@ -13,15 +13,16 @@ public class Song {
 	@Size(min = 1, max = 60, message = "Title must be between 1 and 60 characters long.")
 	private String title;
 
+	@Size(min = 2, max = 40, message = "Album must be between 2 and 40 characters long.")
 	private String artist;
 
 	@Size(min = 1, max = 60, message = "Album must be between 1 and 60 characters long.")
 	private String album;
 
-	@Size(min = 4, max = 4, message = "Year must be 4 characters long.")
+	@Size(min = 4, max = 4, message = "Year must be 4 characters long (format:2000).")
 	private String year;
 
-	@Size(min = 5, max = 5, message = "Length must be 5 characters long.")
+	@Size(min = 5, max = 5, message = "Length must be 5 characters long (format: 00:00).")
 	private String length;
 
 	@Size(min = 1, max = 30, message = "Genre must be between 1 and 30 characters long.")
@@ -57,12 +58,12 @@ public class Song {
 	// Default constructor
 	public Song() {
 		this.id = -1;
-		this.title = "title";
+		this.title = "";
 		this.artist = "";
-		this.album = "album";
-		this.year = "0000";
-		this.length = "00:00";
-		this.genre = "genre";
+		this.album = "";
+		this.year = "";
+		this.length = "";
+		this.genre = "";
 		this.users_id = -1;
 	}
 

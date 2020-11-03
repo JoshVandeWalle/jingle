@@ -13,32 +13,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jingle.business.UserBusinessInterface;
-import com.jingle.business.UserBusinessService;
 import com.jingle.model.Credentials;
 import com.jingle.model.User;
 
 /**
- * 
  * @author Josh Van de Walle
  * The UserController manages behavior related to user CRUD operations including login and registration
  */
 
 @Controller
 @RequestMapping("/user")
-public class UserController 
-{
+public class UserController {
 	@Autowired
 	private HttpSession httpSession;
-	
-	UserBusinessInterface userService; 
-	
+
+	UserBusinessInterface userBusinessService;
+
 	@Autowired
-	public void setUserService(UserBusinessInterface userService)
-	{
-		this.userService = userService;
+	public void setUserBusinessService(UserBusinessInterface userBusinessService) {
+		this.userBusinessService = userBusinessService;
 	}
-	
-	
+
 	/**
 	 * this method manages behavior related to registration
 	 * @param user User the user to attempt to register
@@ -46,37 +41,30 @@ public class UserController
 	 * @return ModelAndView the appropriate view and model combo
 	 */
 	@PostMapping("/handleRegister")
-	public ModelAndView handleRegister(@Valid @ModelAttribute("user") User user, BindingResult result)
-	{
-		userService = new UserBusinessService();
-		
-		if (result.hasErrors())
-		{
+	public ModelAndView handleRegister(@Valid @ModelAttribute("user") User user, BindingResult result) {
+		if (result.hasErrors()) {
 			return new ModelAndView("register", "user", user);
 		}
-		
-		if (userService.register(user) == 0)
-		{
+
+		if (userBusinessService.registerUser(user) == 0) {
 			return new ModelAndView("login", "credentials", user.getCredentials());
 		}
-		
-		else 
-		{
+
+		else {
 			return new ModelAndView("register", "user", user);
 		}
 	}
-	
+
 	@GetMapping("/")
 	public ModelAndView index() {
 		return new ModelAndView("register");
 	}
-	
+
 	@GetMapping("/handleRegister")
-	public ModelAndView handleRefreshRegister()
-	{
+	public ModelAndView handleRefreshRegister() {
 		return this.handleDisplayRegistrationPage();
 	}
-	
+
 	/**
 	 * this method manages behavior related to logging-in
 	 * @param credentials Credentials the credentials to attempt to login
@@ -84,60 +72,51 @@ public class UserController
 	 * @return ModelAndView the appropriate view and model combo
 	 */
 	@PostMapping("/handleLogin")
-	public ModelAndView handleLogin(@Valid @ModelAttribute("credentials") Credentials credentials, BindingResult result)
-	{
-		userService = new UserBusinessService();
-		
-		if (result.hasErrors())
-		{
+	public ModelAndView handleLogin(@Valid @ModelAttribute("credentials") Credentials credentials,
+			BindingResult result) {
+		if (result.hasErrors()) {
 			return new ModelAndView("login", "credentials", credentials);
 		}
-		
+
 		User user = new User(-1, "", "", "", "", credentials);
-		user = userService.login(user);
-		
-		if (user == null)
-		{
+		user = userBusinessService.loginUser(user);
+
+		if (user == null) {
 			return new ModelAndView("login", "user", user);
 		}
-		
-		else 
-		{
+
+		else {
 			httpSession.setAttribute("sessionUser", user);
 			return new ModelAndView("home", "credentials", user.getCredentials());
 		}
 	}
-	
+
 	@GetMapping("/handleLogin")
-	public ModelAndView handleRefreshLogin()
-	{
+	public ModelAndView handleRefreshLogin() {
 		return this.handleDisplayLoginPage();
 	}
-	
+
 	@GetMapping("/register")
-	public ModelAndView handleDisplayRegistrationPage()
-	{
+	public ModelAndView handleDisplayRegistrationPage() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("register");
 		mav.addObject("user", new User());
 		mav.addObject("credentials", new Credentials());
-		
+
 		return mav;
 	}
-	
+
 	@GetMapping("/login")
-	public ModelAndView handleDisplayLoginPage()
-	{
+	public ModelAndView handleDisplayLoginPage() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("login");
 		mav.addObject("credentials", new Credentials());
 		httpSession.removeAttribute("sessionUser");
 		return mav;
 	}
-	
+
 	@GetMapping("/home")
-	public ModelAndView handleHomePageDisplay()
-	{
+	public ModelAndView handleHomePageDisplay() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("home");
 		return mav;

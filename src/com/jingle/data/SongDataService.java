@@ -1,59 +1,46 @@
 package com.jingle.data;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.jingle.model.Song;
 
 /**
- * @author Henry Harvey The SongDataService modifies and retrieves data from the
- *         songs database
+ * @author Henry Harvey 
+ * The SongDataService modifies and retrieves data from the songs database
  */
 
-public class SongDataService implements DataAccessInterface<Song> {
+public class SongDataService implements SongDataInterface {
+
+	private DataSource dataSource;
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+	}
 
 	/**
-	 * @see DataAccessInterface create
+	 * Takes in a song. 
+	 * Inserts song. 
+	 * Return number of rows added. 
+	 * 
+	 * @param user	song to create
+	 * @return int	result
 	 */
 	public int create(Song song) {
-		int result = 0;
-		Database db = new Database();
-		Connection conn = null;
+		String sql = "INSERT INTO songs (title, artist, album, year, length, genre, users_id) VALUES (:title, :artist, :album, :year, :length, :genre, :users_id)";
 
-		String sql = "INSERT INTO songs (title, artist, album, year, length, genre, users_id) VALUES (?,?,?,?,?,?,?)";
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(song);
 
-		try {
-			conn = db.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, song.getTitle());
-			stmt.setString(2, song.getArtist());
-			stmt.setString(3, song.getAlbum());
-			stmt.setString(4, song.getYear());
-			stmt.setString(5, song.getLength());
-			stmt.setString(6, song.getGenre());
-			stmt.setInt(7, song.getUsers_id());
-
-			if (stmt.executeUpdate() != 1) {
-				result = -1;
-				throw new SQLException("Creating song failed.");
-			}
-		} catch (java.sql.SQLException e) {
-			throw new DatabaseException(e);
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (java.sql.SQLException e) {
-					throw new DatabaseException(e);
-				}
-			}
-		}
-		return result;
+		return namedParameterJdbcTemplate.update(sql, params);
 	}
 
 	/**
@@ -70,34 +57,27 @@ public class SongDataService implements DataAccessInterface<Song> {
 		return null;
 	}
 
+	/**
+	 * Selects all songs. 
+	 * Loops through results. 
+	 * Adds each song to list. 
+	 * Return list. 
+	 * 
+	 * @return List<Song>	List of all songs
+	 */
 	public List<Song> readAll() {
-		List<Song> result = new ArrayList<Song>();
-		Database db = new Database();
-		Connection conn = null;
-
 		String sql = "SELECT * FROM songs";
 
-		try {
-			conn = db.getConnection();
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				result.add(new Song(rs.getInt("id"), rs.getString("title"), rs.getString("artist"),
-						rs.getString("album"), rs.getString("year"), rs.getString("length"), rs.getString("genre"),
-						rs.getInt("users_id")));
-			}
-			rs.close();
-		} catch (SQLException e) {
-			throw new DatabaseException(e);
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					throw new DatabaseException(e);
-				}
-			}
+		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, EmptySqlParameterSource.INSTANCE);
+
+		List<Song> result = new ArrayList<Song>();
+
+		while (srs.next()) {
+			result.add(new Song(srs.getInt("id"), srs.getString("title"), srs.getString("artist"),
+					srs.getString("album"), srs.getString("year"), srs.getString("length"), srs.getString("genre"),
+					srs.getInt("users_id")));
 		}
+
 		return result;
 	}
 

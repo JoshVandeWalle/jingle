@@ -1,15 +1,15 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Jingle</title>
-	
-	<spring:url value="/resources/css/main.css" var="mainCss" />
-	<spring:url value="/resources/js/main.js" var="mainJs" />
-	
-	<link href="${mainCss}" rel="stylesheet" />
-	<script src="${mainJs}"></script>
+<title>Jingle</title>
+
+<spring:url value="/resources/css/main.css" var="mainCss" />
+<spring:url value="/resources/js/main.js" var="mainJs" />
+
+<link href="${mainCss}" rel="stylesheet" />
+<script src="${mainJs}"></script>
 </head>
 
 <body>

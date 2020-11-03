@@ -1,10 +1,10 @@
 package com.jingle.model;
 
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Size;
 
 /**
- * @author Henry Harvey
+ * @author Henry Harvey 
  * The User model is the user object model of the application
  */
 
@@ -21,11 +21,11 @@ public class User {
 	private String email;
 
 	@Size(min = 10, max = 10, message = "Phone number must be 10 characters long.")
-	// @Pattern(regexp = "[\\d]{6}", message = "phone number must only include
-	// numbers")
+	@Digits(integer = 10, fraction = 0, message = "Phone number must be digits.")
 	private String phone;
 
 	private Credentials credentials;
+	private int credentials_id;
 
 	// Constructor with all fields
 	public User(int id, String firstName, String lastName, String email, String phone, Credentials credentials) {
@@ -35,9 +35,10 @@ public class User {
 		this.email = email;
 		this.phone = phone;
 		this.credentials = credentials;
+		this.credentials_id = credentials.getId();
 	}
 
-	// Constructor with all fields except id's
+	// Constructor without id
 	public User(String firstName, String lastName, String email, String phone, Credentials credentials) {
 		this.id = -1;
 		this.firstName = firstName;
@@ -45,17 +46,18 @@ public class User {
 		this.email = email;
 		this.phone = phone;
 		this.credentials = credentials;
+		this.credentials_id = credentials.getId();
 	}
 
 	// Default constructor
 	public User() {
-		super();
 		this.id = -1;
-		this.firstName = "first name";
-		this.lastName = "last name";
-		this.email = "email@email.com";
-		this.phone = "1234567890";
+		this.firstName = "";
+		this.lastName = "";
+		this.email = "";
+		this.phone = "";
 		this.credentials = null;
+		this.credentials_id = -1;
 	}
 
 	public int getId() {
@@ -104,6 +106,14 @@ public class User {
 
 	public void setCredentials(Credentials credentials) {
 		this.credentials = credentials;
+	}
+
+	public int getCredentials_id() {
+		return credentials_id;
+	}
+
+	public void setCredentials_id(int credentials_id) {
+		this.credentials_id = credentials_id;
 	}
 
 	@Override

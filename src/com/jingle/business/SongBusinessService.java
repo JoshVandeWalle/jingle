@@ -2,54 +2,78 @@ package com.jingle.business;
 
 import java.util.List;
 
-import com.jingle.data.SongDataService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.jingle.data.SongDataInterface;
 import com.jingle.model.Song;
 
 /**
- * @author Henry Harvey
+ * @author Henry Harvey 
  * The SongBusinessService handles the business logic of the application involving songs
  */
 
+@Service
 public class SongBusinessService implements SongBusinessInterface {
-
-	/**
-	 * @see SongBusinessInterface addSong
-	 */
-	public int addSong(Song song) {
-		SongDataService ds = new SongDataService();
-		return ds.create(song);
+	
+	SongDataInterface songDataService;
+	
+	@Autowired
+	public void setSongDataService(SongDataInterface songDataService) {
+		this.songDataService = songDataService;
 	}
 
 	/**
-	 * @see SongBusinessInterface searchSongsByTitle
+	 * Takes in a song. 
+	 * Returns the songDataService create method with song as the parameter. 
+	 * 
+	 * @param song	song to upload
+	 * @return int	result
 	 */
-	public List<Song> searchSongsByTitle(Song song) {
-		SongDataService ds = new SongDataService();
-		return ds.readByTitle(song);
+	public int uploadSong(Song song) {
+		return songDataService.create(song);
 	}
 
 	/**
-	 * @see SongBusinessInterface getAllSongs
+	 * Takes in a song. 
+	 * Returns the songDataService readByTitle method with song as the parameter. 
+	 * 
+	 * @param song			song with title to search
+	 * @return List<Song>	list of results
+	 */
+	public List<Song> getSongsByTitle(Song song) {
+		return songDataService.readByTitle(song);
+	}
+
+	/**
+	 * Returns the songDataService readAll method. 
+	 * 
+	 * @return List<Song>	list of all songs
 	 */
 	public List<Song> getAllSongs() {
-		SongDataService ds = new SongDataService();
-		return ds.readAll();
+		return songDataService.readAll();
 	}
 
 	/**
-	 * @see SongBusinessInterface editSong
+	 * Takes in a song. 
+	 * Returns the songDataService update method with song as the parameter. 
+	 * 
+	 * @param song	song to edit
+	 * @return int	result
 	 */
 	public int editSong(Song song) {
-		SongDataService ds = new SongDataService();
-		return ds.update(song);
+		return songDataService.update(song);
 	}
 
 	/**
-	 * @see SongBusinessInterface removeSong
+	 * Takes in a song. 
+	 * Returns the songDataService delete method with song as the parameter. 
+	 * 
+	 * @param song	song to delete
+	 * @return int	result
 	 */
 	public int removeSong(Song song) {
-		SongDataService ds = new SongDataService();
-		return ds.delete(song);
+		return songDataService.delete(song);
 	}
 
 }

@@ -1,13 +1,13 @@
 package com.jingle.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.jingle.model.User;
@@ -28,108 +28,123 @@ public class UserDataService implements UserDataInterface {
 	}
 
 	/**
-	 * Takes in a user. 
-	 * Inserts credentials and retrieves generated key. 
-	 * If not created, return -1. 
-	 * Inserts user using generated key. 
-	 * If not created, return -2. 
-	 * Return 1. 
+	 * Take in a user. 
+	 * Insert user. 
+	 * Return number of rows affected.
 	 * 
 	 * @param user	user to create
-	 * @return int	result
+	 * @return int	rows affected
 	 */
 	public int create(User user) {
-		// insert credentials
-		String sql1 = "INSERT INTO credentials (username, password) VALUES (:username, :password)";
+		String sql = "INSERT INTO users (firstname, lastname, email, phone, credentials_id) VALUES (:firstName, :lastName, :email, :phone, :credentials_id)";
 
-		BeanPropertySqlParameterSource params1 = new BeanPropertySqlParameterSource(user.getCredentials());
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
 
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-
-		int result1 = namedParameterJdbcTemplate.update(sql1, params1, keyHolder);
-
-		if (result1 != 1) {
-			return -1;
-		}
-
-		// insert user
-		String sql2 = "INSERT INTO users (firstname, lastname, email, phone, credentials_id) VALUES (:firstName, :lastName, :email, :phone, :credentials_id)";
-
-		user.setCredentials_id(keyHolder.getKey().intValue());
-		BeanPropertySqlParameterSource params2 = new BeanPropertySqlParameterSource(user);
-
-		int result2 = namedParameterJdbcTemplate.update(sql2, params2);
-
-		if (result2 != 1) {
-			return -2;
-		}
-
-		return 1;
+		return namedParameterJdbcTemplate.update(sql, params);
 	}
 
 	/**
-	 * not implemented
-	 */
-	public User read(User user) {
-		return null;
-	}
-
-	/**
-	 * Takes in a user with credentials. 
-	 * Selects credentials id from credential username and password. 
-	 * If not selected, return null. 
-	 * Selects user using credentials id. 
+	 * Take in a user. 
+	 * Select user using user id. 
 	 * If not selected, return null. 
 	 * Return selected user. 
 	 * 
 	 * @param user 	user to read
 	 * @return User found user
 	 */
-	public User readByCredentials(User user) {
-		String sql1 = "SELECT id FROM credentials WHERE username = :username AND password = :password LIMIT 1";
+	public User read(User user) {
+		String sql = "SELECT * FROM users WHERE id = :id LIMIT 1";
 
-		BeanPropertySqlParameterSource params1 = new BeanPropertySqlParameterSource(user.getCredentials());
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
 
-		SqlRowSet srs1 = namedParameterJdbcTemplate.queryForRowSet(sql1, params1);
+		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, params);
 
-		if (!srs1.last()) {
+		if (!srs.last()) {
 			return null;
 		}
 
-		String sql2 = "SELECT * FROM users WHERE credentials_id = :credentials_id LIMIT 1";
-
-		user.setCredentials_id(srs1.getInt("id"));
-		BeanPropertySqlParameterSource params2 = new BeanPropertySqlParameterSource(user);
-
-		SqlRowSet srs2 = namedParameterJdbcTemplate.queryForRowSet(sql2, params2);
-
-		if (!srs2.last()) {
-			return null;
-		}
-
-		return new User(srs2.getInt("id"),srs2.getString("firstname"), srs2.getString("lastname"), srs2.getString("email"),
-				srs2.getString("phone"), user.getCredentials());
+		return new User(srs.getInt("id"), srs.getString("firstname"), srs.getString("lastname"), srs.getString("email"),
+				srs.getString("phone"), user.getCredentials());
 	}
 
 	/**
-	 * not implemented
+	 * Take in a user. 
+	 * Select user using credentials id. 
+	 * If not selected, return null. 
+	 * Return selected user. 
+	 * 
+	 * @param user 	user to read
+	 * @return User found user
+	 */
+	public User readByCredentialsId(User user) {
+		String sql = "SELECT * FROM users WHERE credentials_id = :credentials_id LIMIT 1";
+
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
+
+		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, params);
+
+		if (!srs.last()) {
+			return null;
+		}
+
+		return new User(srs.getInt("id"), srs.getString("firstname"), srs.getString("lastname"), srs.getString("email"),
+				srs.getString("phone"), user.getCredentials());
+	}
+
+	/**
+	 * Select all users. 
+	 * Loop through results. 
+	 * Add each user to list. 
+	 * Return list. 
+	 * 
+	 * @return List<User> 	list of all users
 	 */
 	public List<User> readAll() {
-		return null;
+		String sql = "SECELCT * FROM users";
+
+		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, EmptySqlParameterSource.INSTANCE);
+
+		List<User> result = new ArrayList<User>();
+
+		while (srs.next()) {
+			User user = new User(srs.getInt("id"), srs.getString("firstname"), srs.getString("lastname"),
+					srs.getString("email"), srs.getString("phone"), srs.getInt("credentials_id"));
+			result.add(user);
+		}
+
+		return result;
 	}
 
 	/**
-	 * not implemented
+	 * Take in a user. 
+	 * Update user. 
+	 * Return number of rows affected. 
+	 * 
+	 * @param user	user to update
+	 * @return int	rows affected
 	 */
 	public int update(User user) {
-		return 0;
+		String sql = "UPDATE users SET firstname = :firstName, lastname = :lastName, email = :email, phone = :phone WHERE id = :id LIMIT 1";
+
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
+
+		return namedParameterJdbcTemplate.update(sql, params);
 	}
 
 	/**
-	 * not implemented
+	 * Take in a user. 
+	 * Delete user. 
+	 * Return number of rows affected. 
+	 * 
+	 * @param user	user to delete
+	 * @return int	rows affected
 	 */
 	public int delete(User user) {
-		return 0;
+		String sql = "DELETE FROM users WHERE id = :id LIMIT 1";
+
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
+
+		return namedParameterJdbcTemplate.update(sql, params);
 	}
 
 }

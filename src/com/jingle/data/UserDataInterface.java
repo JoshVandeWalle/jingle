@@ -16,7 +16,7 @@ public interface UserDataInterface {
 
 	public User read(User user);
 
-	public User readByCredentials(User user);
+	public User readByCredentialsId(User user);
 
 	public List<User> readAll();
 

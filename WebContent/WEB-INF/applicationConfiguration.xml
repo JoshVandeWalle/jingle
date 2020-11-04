@@ -102,6 +102,11 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
+	<bean id="credentialsDataService"
+		class="com.jingle.data.CredentialsDataService">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
 	<bean id="songDataService" class="com.jingle.data.SongDataService">
 		<property name="dataSource" ref="dataSource" />
 	</bean>

@@ -28,11 +28,11 @@ public class SongDataService implements SongDataInterface {
 	}
 
 	/**
-	 * Takes in a song. 
-	 * Inserts song. 
+	 * Take in a song. 
+	 * Insert song. 
 	 * Return number of rows added. 
 	 * 
-	 * @param user	song to create
+	 * @param song	song to create
 	 * @return int	result
 	 */
 	public int create(Song song) {
@@ -44,10 +44,27 @@ public class SongDataService implements SongDataInterface {
 	}
 
 	/**
-	 * not implemented
+	 * Take in a song. 
+	 * Select song using id. 
+	 * If not selected, return null. 
+	 * Return selected song. 
+	 * 
+	 * @param song 	song to read
+	 * @return Song found song
 	 */
 	public Song read(Song song) {
-		return null;
+		String sql = "SELECT * FROM songs WHERE id = :id LIMIT 1";
+
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(song);
+
+		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, params);
+
+		if (!srs.last()) {
+			return null;
+		}
+
+		return new Song(srs.getInt("id"), srs.getString("title"), srs.getString("artist"), srs.getString("album"),
+				srs.getString("year"), srs.getString("length"), srs.getString("genre"), srs.getInt("users_id"));
 	}
 
 	/**
@@ -58,9 +75,9 @@ public class SongDataService implements SongDataInterface {
 	}
 
 	/**
-	 * Selects all songs. 
-	 * Loops through results. 
-	 * Adds each song to list. 
+	 * Select all songs. 
+	 * Loop through results. 
+	 * Add each song to list. 
 	 * Return list. 
 	 * 
 	 * @return List<Song>	List of all songs
@@ -82,17 +99,35 @@ public class SongDataService implements SongDataInterface {
 	}
 
 	/**
-	 * not implemented
+	 * Take in a song. 
+	 * Update song. 
+	 * Return number of rows affected. 
+	 * 
+	 * @param song	song to update
+	 * @return int	result
 	 */
 	public int update(Song song) {
-		return 0;
+		String sql = "UPDATE songs SET title = :title, artist = :artist, album = :album, year = :year, length = :length, genre = :genre WHERE id = :id LIMIT 1";
+
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(song);
+
+		return namedParameterJdbcTemplate.update(sql, params);
 	}
 
 	/**
-	 * not implemented
+	 * Take in a song. 
+	 * Delete song. 
+	 * Return number of rows affected. 
+	 * 
+	 * @param song	song to delete
+	 * @return int	result
 	 */
 	public int delete(Song song) {
-		return 0;
+		String sql = "DELETE FROM songs WHERE id = :id LIMIT 1";
+
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(song);
+
+		return namedParameterJdbcTemplate.update(sql, params);
 	}
 
 }

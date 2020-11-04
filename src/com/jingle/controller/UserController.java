@@ -46,13 +46,11 @@ public class UserController {
 			return new ModelAndView("register", "user", user);
 		}
 
-		if (userBusinessService.registerUser(user) == 0) {
-			return new ModelAndView("login", "credentials", user.getCredentials());
-		}
-
-		else {
+		if (userBusinessService.registerUser(user) != 1) {
 			return new ModelAndView("register", "user", user);
 		}
+
+		return new ModelAndView("login", "credentials", user.getCredentials());
 	}
 
 	@GetMapping("/")
@@ -85,10 +83,8 @@ public class UserController {
 			return new ModelAndView("login", "user", user);
 		}
 
-		else {
-			httpSession.setAttribute("sessionUser", user);
-			return new ModelAndView("home", "credentials", user.getCredentials());
-		}
+		httpSession.setAttribute("sessionUser", user);
+		return new ModelAndView("home", "credentials", user.getCredentials());
 	}
 
 	@GetMapping("/handleLogin")

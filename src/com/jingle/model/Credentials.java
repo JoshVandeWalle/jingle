@@ -34,6 +34,14 @@ public class Credentials {
 		this.role = 0;
 	}
 
+	// Constructor without role
+	public Credentials(int id, String username, String password) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.role = 0;
+	}
+
 	// Default constructor
 	public Credentials() {
 		this.id = -1;

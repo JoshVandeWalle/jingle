@@ -34,33 +34,20 @@ public class UserController {
 		this.userBusinessService = userBusinessService;
 	}
 
-	/**
-	 * this method manages behavior related to registration
-	 * @param user User the user to attempt to register
-	 * @param result the validation result
-	 * @return ModelAndView the appropriate view and model combo
-	 */
-	@PostMapping("/handleRegister")
-	public ModelAndView handleRegister(@Valid @ModelAttribute("user") User user, BindingResult result) {
-		if (result.hasErrors()) {
-			return new ModelAndView("register", "user", user);
-		}
-
-		if (userBusinessService.registerUser(user) != 1) {
-			return new ModelAndView("register", "user", user);
-		}
-
-		return new ModelAndView("login", "credentials", user.getCredentials());
+	@GetMapping(value = { "/", "/home" })
+	public ModelAndView handleHomePageDisplay() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("home");
+		return mav;
 	}
 
-	@GetMapping("/")
-	public ModelAndView index() {
-		return new ModelAndView("register");
-	}
-
-	@GetMapping("/handleRegister")
-	public ModelAndView handleRefreshRegister() {
-		return this.handleDisplayRegistrationPage();
+	@GetMapping("/login")
+	public ModelAndView handleDisplayLoginPage() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("login");
+		mav.addObject("credentials", new Credentials());
+		httpSession.removeAttribute("sessionUser");
+		return mav;
 	}
 
 	/**
@@ -98,24 +85,31 @@ public class UserController {
 		mav.setViewName("register");
 		mav.addObject("user", new User());
 		mav.addObject("credentials", new Credentials());
-
 		return mav;
 	}
 
-	@GetMapping("/login")
-	public ModelAndView handleDisplayLoginPage() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("login");
-		mav.addObject("credentials", new Credentials());
-		httpSession.removeAttribute("sessionUser");
-		return mav;
+	/**
+	 * this method manages behavior related to registration
+	 * @param user User the user to attempt to register
+	 * @param result the validation result
+	 * @return ModelAndView the appropriate view and model combo
+	 */
+	@PostMapping("/handleRegister")
+	public ModelAndView handleRegister(@Valid @ModelAttribute("user") User user, BindingResult result) {
+		if (result.hasErrors()) {
+			return new ModelAndView("register", "user", user);
+		}
+
+		if (userBusinessService.registerUser(user) != 1) {
+			return new ModelAndView("register", "user", user);
+		}
+
+		return new ModelAndView("login", "credentials", user.getCredentials());
 	}
 
-	@GetMapping("/home")
-	public ModelAndView handleHomePageDisplay() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("home");
-		return mav;
+	@GetMapping("/handleRegister")
+	public ModelAndView handleRefreshRegister() {
+		return this.handleDisplayRegistrationPage();
 	}
 
 }

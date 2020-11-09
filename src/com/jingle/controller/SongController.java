@@ -41,19 +41,48 @@ public class SongController {
 	 * 
 	 * @return ModelAndView the container with the correct view and data
 	 */
-	@GetMapping("/")
+	@GetMapping("/browse")
 	public ModelAndView handleRetrieveAll() {
 		try {
 			// initialize the Model and View container
 			ModelAndView mav = new ModelAndView();
 			// provide view name
-			mav.setViewName("songIndex");
+			mav.setViewName("songBrowse");
 
 			// pass control to business layer to get all the songs in the database
 			List<Song> songList = songBusinessService.getAllSongs();
 
 			// pass the list of songs to the view for display
-			mav.addObject("list", songList);
+			mav.addObject("songs", songList);
+
+			// return the Model and View container so the framework can display the right
+			// view and data
+			return mav;
+		}
+
+		catch (Exception e) {
+			return new ModelAndView("error");
+		}
+	}
+
+	/**
+	 * This method manages behavior related to displaying the user page.
+	 * 
+	 * @return ModelAndView the container with the correct view and data
+	 */
+
+	@GetMapping("/handleDisplayUploadPage")
+	public ModelAndView handleDisplayUploadPage() {
+		try {
+			// initialize the Model and View container
+			ModelAndView mav = new ModelAndView();
+			// provide view name
+			mav.setViewName("songUpload");
+
+			// provided the Song object to be created
+			Song song = new Song();
+			song.setArtist(((User) httpSession.getAttribute("sessionUser")).getCredentials().getUsername());
+			mav.addObject("song", song);
 
 			// return the Model and View container so the framework can display the right
 			// view and data
@@ -102,31 +131,19 @@ public class SongController {
 		}
 	}
 
-	/**
-	 * This method manages behavior related to displaying the user page.
-	 * 
-	 * @return ModelAndView the container with the correct view and data
-	 */
-	@GetMapping("/handleDisplayUploadPage")
-	public ModelAndView handleDisplayUploadPage() {
-		try {
-			// initialize the Model and View container
-			ModelAndView mav = new ModelAndView();
-			// provide view name
-			mav.setViewName("songUpload");
+	@GetMapping("/uploads")
+	public ModelAndView handleDisplayUploadsPage() {
+		return new ModelAndView("uploads", "songs", songBusinessService.getSongsByUsersId(
+				new Song(-1, "", "", "", "", "", "", ((User) httpSession.getAttribute("sessionUser")).getId())));
+	}
 
-			// provided the Song object to be created
-			Song song = new Song();
-			song.setArtist(((User) httpSession.getAttribute("sessionUser")).getCredentials().getUsername());
-			mav.addObject("song", song);
-
-			// return the Model and View container so the framework can display the right
-			// view and data
-			return mav;
-		}
-
-		catch (Exception e) {
-			return new ModelAndView("error");
+	@PostMapping("/song")
+	public ModelAndView handleDisplaySong(@ModelAttribute("song") Song song) {
+		if (((User) httpSession.getAttribute("sessionUser")).getId() == song.getUsers_id()) {
+			return new ModelAndView("ownersSong", "song", song);
+		} else {
+			System.out.println(song);
+			return new ModelAndView("song", "song", song);
 		}
 	}
 

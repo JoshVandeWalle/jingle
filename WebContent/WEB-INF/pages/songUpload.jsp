@@ -1,5 +1,5 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<h2>Upload your song!</h2>
+<h2>Upload your song</h2>
 <form:form method="POST" action="handleUpload" modelAttribute="song">
 	<table>
 		<tr>

@@ -38,9 +38,7 @@ public class UserDataService implements UserDataInterface {
 	public int create(User user) {
 		String sql = "INSERT INTO users (firstname, lastname, email, phone, credentials_id) VALUES (:firstName, :lastName, :email, :phone, :credentials_id)";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
-
-		return namedParameterJdbcTemplate.update(sql, params);
+		return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(user));
 	}
 
 	/**
@@ -55,9 +53,7 @@ public class UserDataService implements UserDataInterface {
 	public User read(User user) {
 		String sql = "SELECT * FROM users WHERE id = :id LIMIT 1";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
-
-		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, params);
+		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, new BeanPropertySqlParameterSource(user));
 
 		if (!srs.last()) {
 			return null;
@@ -79,9 +75,7 @@ public class UserDataService implements UserDataInterface {
 	public User readByCredentialsId(User user) {
 		String sql = "SELECT * FROM users WHERE credentials_id = :credentials_id LIMIT 1";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
-
-		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, params);
+		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, new BeanPropertySqlParameterSource(user));
 
 		if (!srs.last()) {
 			return null;
@@ -126,9 +120,7 @@ public class UserDataService implements UserDataInterface {
 	public int update(User user) {
 		String sql = "UPDATE users SET firstname = :firstName, lastname = :lastName, email = :email, phone = :phone WHERE id = :id LIMIT 1";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
-
-		return namedParameterJdbcTemplate.update(sql, params);
+		return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(user));
 	}
 
 	/**
@@ -142,9 +134,7 @@ public class UserDataService implements UserDataInterface {
 	public int delete(User user) {
 		String sql = "DELETE FROM users WHERE id = :id LIMIT 1";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
-
-		return namedParameterJdbcTemplate.update(sql, params);
+		return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(user));
 	}
 
 }

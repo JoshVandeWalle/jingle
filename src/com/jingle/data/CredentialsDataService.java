@@ -41,11 +41,9 @@ public class CredentialsDataService implements CredentialsDataInterface {
 	public int create(Credentials credentials) {
 		String sql = "INSERT INTO credentials (username, password) VALUES (:username, :password)";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(credentials);
-
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 
-		int result = namedParameterJdbcTemplate.update(sql, params, keyHolder);
+		int result = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(credentials), keyHolder);
 
 		if (result != 1) {
 			return -1;
@@ -66,9 +64,7 @@ public class CredentialsDataService implements CredentialsDataInterface {
 	public Credentials read(Credentials credentials) {
 		String sql = "SELECT * FROM credentials WHERE id = :id LIMIT 1";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(credentials);
-
-		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, params);
+		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, new BeanPropertySqlParameterSource(credentials));
 
 		if (!srs.last()) {
 			return null;
@@ -89,9 +85,7 @@ public class CredentialsDataService implements CredentialsDataInterface {
 	public Credentials readByUsernamePassword(Credentials credentials) {
 		String sql = "SELECT * FROM credentials WHERE username = :username AND password = :password LIMIT 1";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(credentials);
-
-		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, params);
+		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, new BeanPropertySqlParameterSource(credentials));
 
 		if (!srs.last()) {
 			return null;
@@ -136,9 +130,7 @@ public class CredentialsDataService implements CredentialsDataInterface {
 	public int update(Credentials credentials) {
 		String sql = "UPDATE credentials SET username = :username, password = :password WHERE id = :id LIMIT 1";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(credentials);
-
-		return namedParameterJdbcTemplate.update(sql, params);
+		return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(credentials));
 	}
 
 	/**
@@ -152,9 +144,7 @@ public class CredentialsDataService implements CredentialsDataInterface {
 	public int delete(Credentials credentials) {
 		String sql = "DELETE FROM credentials WHERE id = :id LIMIT 1";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(credentials);
-
-		return namedParameterJdbcTemplate.update(sql, params);
+		return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(credentials));
 	}
 
 }

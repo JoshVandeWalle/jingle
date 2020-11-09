@@ -19,6 +19,8 @@ import com.jingle.model.Song;
 public interface SongBusinessInterface {
 
 	public int uploadSong(Song song);
+	
+	public List<Song> getSongsByUsersId(Song song);
 
 	public List<Song> getSongsByTitle(Song song);
 

@@ -15,9 +15,9 @@ import com.jingle.model.Song;
 
 @Service
 public class SongBusinessService implements SongBusinessInterface {
-	
+
 	SongDataInterface songDataService;
-	
+
 	@Autowired
 	public void setSongDataService(SongDataInterface songDataService) {
 		this.songDataService = songDataService;
@@ -36,10 +36,21 @@ public class SongBusinessService implements SongBusinessInterface {
 
 	/**
 	 * Takes in a song. 
+	 * Returns the songDataService readByUsersId method with song as the parameter. 
+	 * 
+	 * @param 	song		song with users_id to search
+	 * @return 	List<Song>	list of results
+	 */
+	public List<Song> getSongsByUsersId(Song song) {
+		return songDataService.readByUsersId(song);
+	}
+
+	/**
+	 * Takes in a song. 
 	 * Returns the songDataService readByTitle method with song as the parameter. 
 	 * 
-	 * @param song			song with title to search
-	 * @return List<Song>	list of results
+	 * @param 	song		song with title to search
+	 * @return 	List<Song>	list of results
 	 */
 	public List<Song> getSongsByTitle(Song song) {
 		return songDataService.readByTitle(song);
@@ -58,8 +69,8 @@ public class SongBusinessService implements SongBusinessInterface {
 	 * Takes in a song. 
 	 * Returns the songDataService update method with song as the parameter. 
 	 * 
-	 * @param song	song to edit
-	 * @return int	result
+	 * @param 	song	song to edit
+	 * @return 	int		result
 	 */
 	public int editSong(Song song) {
 		return songDataService.update(song);
@@ -69,8 +80,8 @@ public class SongBusinessService implements SongBusinessInterface {
 	 * Takes in a song. 
 	 * Returns the songDataService delete method with song as the parameter. 
 	 * 
-	 * @param song	song to delete
-	 * @return int	result
+	 * @param 	song	song to delete
+	 * @return 	int		result
 	 */
 	public int removeSong(Song song) {
 		return songDataService.delete(song);

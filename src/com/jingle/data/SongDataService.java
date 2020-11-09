@@ -38,9 +38,7 @@ public class SongDataService implements SongDataInterface {
 	public int create(Song song) {
 		String sql = "INSERT INTO songs (title, artist, album, year, length, genre, users_id) VALUES (:title, :artist, :album, :year, :length, :genre, :users_id)";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(song);
-
-		return namedParameterJdbcTemplate.update(sql, params);
+		return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(song));
 	}
 
 	/**
@@ -55,9 +53,7 @@ public class SongDataService implements SongDataInterface {
 	public Song read(Song song) {
 		String sql = "SELECT * FROM songs WHERE id = :id LIMIT 1";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(song);
-
-		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, params);
+		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, new BeanPropertySqlParameterSource(song));
 
 		if (!srs.last()) {
 			return null;
@@ -65,6 +61,22 @@ public class SongDataService implements SongDataInterface {
 
 		return new Song(srs.getInt("id"), srs.getString("title"), srs.getString("artist"), srs.getString("album"),
 				srs.getString("year"), srs.getString("length"), srs.getString("genre"), srs.getInt("users_id"));
+	}
+
+	public List<Song> readByUsersId(Song song) {
+		String sql = "SELECT * FROM songs WHERE users_id = :users_id";
+
+		SqlRowSet srs = namedParameterJdbcTemplate.queryForRowSet(sql, new BeanPropertySqlParameterSource(song));
+
+		List<Song> result = new ArrayList<Song>();
+
+		while (srs.next()) {
+			result.add(new Song(srs.getInt("id"), srs.getString("title"), srs.getString("artist"),
+					srs.getString("album"), srs.getString("year"), srs.getString("length"), srs.getString("genre"),
+					srs.getInt("users_id")));
+		}
+		
+		return result;
 	}
 
 	/**
@@ -109,9 +121,7 @@ public class SongDataService implements SongDataInterface {
 	public int update(Song song) {
 		String sql = "UPDATE songs SET title = :title, artist = :artist, album = :album, year = :year, length = :length, genre = :genre WHERE id = :id LIMIT 1";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(song);
-
-		return namedParameterJdbcTemplate.update(sql, params);
+		return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(song));
 	}
 
 	/**
@@ -125,9 +135,7 @@ public class SongDataService implements SongDataInterface {
 	public int delete(Song song) {
 		String sql = "DELETE FROM songs WHERE id = :id LIMIT 1";
 
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(song);
-
-		return namedParameterJdbcTemplate.update(sql, params);
+		return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(song));
 	}
 
 }

@@ -16,6 +16,8 @@ public interface SongDataInterface {
 
 	public Song read(Song song);
 	
+	public List<Song> readByUsersId(Song song);
+	
 	public List<Song> readByTitle(Song song);
 
 	public List<Song> readAll();

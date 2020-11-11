@@ -1,12 +1,11 @@
 package com.jingle.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,92 +37,132 @@ public class SongController {
 
 	/**
 	 * this method manages behavior related to displaying all songs
+	 * initialize the Model and View container
+	 * provide view name
+	 * pass control to business layer to get all the songs in the database
+	 * pass the list of songs to the view for display
+	 * return the Model and View container so the framework can display the right view and data
 	 * 
 	 * @return ModelAndView the container with the correct view and data
 	 */
 	@GetMapping("/browse")
-	public ModelAndView handleRetrieveAll() {
+	public ModelAndView handleRetrieveAllSongs() {
 		try {
-			// initialize the Model and View container
 			ModelAndView mav = new ModelAndView();
-			// provide view name
 			mav.setViewName("songBrowse");
-
-			// pass control to business layer to get all the songs in the database
-			List<Song> songList = songBusinessService.getAllSongs();
-
-			// pass the list of songs to the view for display
-			mav.addObject("songs", songList);
-
-			// return the Model and View container so the framework can display the right
-			// view and data
+			mav.addObject("songs", songBusinessService.getAllSongs());
+			mav.addObject("viewSong", new Song());
 			return mav;
-		}
-
-		catch (Exception e) {
+		} catch (Exception e) {
 			return new ModelAndView("error");
 		}
 	}
 
 	/**
 	 * This method manages behavior related to displaying the user page.
+	 * initialize the Model and View container
+	 * provide view name
+	 * provided the Song object to be created
+	 * return the Model and View container so the framework can display the right view and data
 	 * 
 	 * @return ModelAndView the container with the correct view and data
 	 */
 
-	@GetMapping("/handleDisplayUploadPage")
+	@GetMapping("/upload")
 	public ModelAndView handleDisplayUploadPage() {
 		try {
-			// initialize the Model and View container
 			ModelAndView mav = new ModelAndView();
-			// provide view name
 			mav.setViewName("songUpload");
-
-			// provided the Song object to be created
-			Song song = new Song();
-			song.setArtist(((User) httpSession.getAttribute("sessionUser")).getCredentials().getUsername());
-			mav.addObject("song", song);
-
-			// return the Model and View container so the framework can display the right
-			// view and data
+			mav.addObject("song",
+					new Song(-1, "", ((User) httpSession.getAttribute("sessionUser")).getCredentials().getUsername(),
+							"", "", "", "", -1));
 			return mav;
-		}
-
-		catch (Exception e) {
+		} catch (Exception e) {
 			return new ModelAndView("error");
 		}
 	}
 
 	/**
 	 * This method manages behavior related to adding a new song
+	 * set song ID based on session user
+	 * pass control to business layer to add song to database and catch result flag
+	 * if the song wasn't added successfully
 	 * 
 	 * @param song the new song
 	 * @return ModelAndView the container with the correct view and data
 	 */
 	@PostMapping("/handleUpload")
-	public ModelAndView handleUploadSong(@Valid @ModelAttribute("song") Song song) {
+	public ModelAndView handleUploadSong(@Valid @ModelAttribute("song") Song song, BindingResult result) {
 		try {
-			// set song ID based on session user
+			if (result.hasErrors()) {
+				return this.handleDisplayUploadPage();
+			}
 			song.setUsers_id(((User) httpSession.getAttribute("sessionUser")).getId());
-
-			// check if the user provided an artist
-			/*
-			 * if (song.getArtist() == null || song.getArtist().equals("")) { // use the
-			 * username as default song.setArtist(((User)
-			 * httpSession.getAttribute("sessionUser")).getCredentials().getUsername()); }
-			 */
-
-			// pass control to business layer to add song to database and catch result flag
-			int result = songBusinessService.uploadSong(song);
-
-			// if the song wasn't added successfully
-			if (result != 1) {
+			if (songBusinessService.uploadSong(song) != 1) {
 				ModelAndView mav = new ModelAndView();
 				mav.setViewName("error");
 				return mav;
 			}
+			return this.handleDisplayUploadsPage();
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
+	}
 
-			return this.handleRetrieveAll();
+	@GetMapping("/uploads")
+	public ModelAndView handleDisplayUploadsPage() {
+		try {
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("songsUploaded");
+			mav.addObject("songs", songBusinessService.getSongsByUsersId(
+					new Song(-1, "", "", "", "", "", "", ((User) httpSession.getAttribute("sessionUser")).getId())));
+			mav.addObject("viewSong", new Song());
+			return mav;
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
+	}
+
+	@PostMapping("/song")
+	public ModelAndView handleDisplaySong(@ModelAttribute("song") Song song) {
+		try {
+			ModelAndView mav = new ModelAndView();
+			mav.addObject("song", song);
+			if (((User) httpSession.getAttribute("sessionUser")).getId() == song.getUsers_id()) {
+				mav.setViewName("songOwned");
+			} else {
+				mav.setViewName("song");
+			}
+			return mav;
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
+	}
+
+	@PostMapping("/edit")
+	public ModelAndView handleDisplayEditSong(@ModelAttribute("song") Song song) {
+		try {
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("songEdit");
+			mav.addObject("song", song);
+			return mav;
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
+	}
+
+	@PostMapping("/handleEdit")
+	public ModelAndView handleEditSong(@Valid @ModelAttribute("song") Song song, BindingResult result) {
+		try {
+			if (result.hasErrors()) {
+				return this.handleDisplayEditSong(song);
+			}
+			if (songBusinessService.editSong(song) != 1) {
+				ModelAndView mav = new ModelAndView();
+				mav.setViewName("error");
+				return mav;
+			}
+			return this.handleDisplayUploadsPage();
 		}
 
 		catch (Exception e) {
@@ -131,19 +170,31 @@ public class SongController {
 		}
 	}
 
-	@GetMapping("/uploads")
-	public ModelAndView handleDisplayUploadsPage() {
-		return new ModelAndView("uploads", "songs", songBusinessService.getSongsByUsersId(
-				new Song(-1, "", "", "", "", "", "", ((User) httpSession.getAttribute("sessionUser")).getId())));
+	@PostMapping("/delete")
+	public ModelAndView handleDisplayDeleteSong(@ModelAttribute("song") Song song) {
+		try {
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("songDelete");
+			mav.addObject("song", song);
+			return mav;
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
 	}
 
-	@PostMapping("/song")
-	public ModelAndView handleDisplaySong(@ModelAttribute("song") Song song) {
-		if (((User) httpSession.getAttribute("sessionUser")).getId() == song.getUsers_id()) {
-			return new ModelAndView("ownersSong", "song", song);
-		} else {
-			System.out.println(song);
-			return new ModelAndView("song", "song", song);
+	@PostMapping("/handleDelete")
+	public ModelAndView handleDeleteSong(@ModelAttribute("song") Song song) {
+		try {
+			if (songBusinessService.removeSong(song) != 1) {
+				ModelAndView mav = new ModelAndView();
+				mav.setViewName("error");
+				return mav;
+			}
+			return this.handleDisplayUploadsPage();
+		}
+
+		catch (Exception e) {
+			return new ModelAndView("error");
 		}
 	}
 

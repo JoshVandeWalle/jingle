@@ -3,12 +3,12 @@
 <h2>My Uploads</h2>
 <script>
 	function goToUpload() {
-		window.location.href = "../song/handleDisplayUploadPage";
+		window.location.href = "../song/upload";
 	}
 </script>
 <table>
 	<tr>
-		<!-- <th></th> -->
+		<th></th>
 		<th>Title</th>
 		<th>Artist</th>
 		<th>Album</th>
@@ -18,17 +18,17 @@
 	</tr>
 	<c:forEach var="song" items="${songs}">
 		<tr>
-			<%-- <td><form:form method="POST" action="song" modelAttribute="song">
+			<td><form:form method="POST" action="song" modelAttribute="viewSong">
 					<form:input type="hidden" path="id" value="${song.id}" />
 					<form:input type="hidden" path="title" value="${song.title}" />
-					<form:input type="hidden" path="artist" value="${song.title}" />
-					<form:input type="hidden" path="album" value="${song.title}" />
-					<form:input type="hidden" path="year" value="${song.title}" />
-					<form:input type="hidden" path="length" value="${song.title}" />
-					<form:input type="hidden" path="genre" value="${song.title}" />
+					<form:input type="hidden" path="artist" value="${song.artist}" />
+					<form:input type="hidden" path="album" value="${song.album}" />
+					<form:input type="hidden" path="year" value="${song.year}" />
+					<form:input type="hidden" path="length" value="${song.length}" />
+					<form:input type="hidden" path="genre" value="${song.genre}" />
 					<form:input type="hidden" path="users_id" value="${song.users_id}" />
 					<input class="main-button" type="submit" value="View" />
-				</form:form></td> --%>
+				</form:form></td>
 			<td><c:out value="${song.title}" /></td>
 			<td><c:out value="${song.artist}" /></td>
 			<td><c:out value="${song.album}" /></td>

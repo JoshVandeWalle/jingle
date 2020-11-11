@@ -13,7 +13,7 @@ public class Song {
 	@Size(min = 1, max = 60, message = "Title must be between 1 and 60 characters long.")
 	private String title;
 
-	@Size(min = 2, max = 40, message = "Album must be between 2 and 40 characters long.")
+	@Size(min = 1, max = 40, message = "Artist must be between 2 and 40 characters long.")
 	private String artist;
 
 	@Size(min = 1, max = 60, message = "Album must be between 1 and 60 characters long.")

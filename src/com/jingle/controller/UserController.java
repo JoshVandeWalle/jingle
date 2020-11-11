@@ -36,18 +36,26 @@ public class UserController {
 
 	@GetMapping(value = { "/", "/home" })
 	public ModelAndView handleHomePageDisplay() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("home");
-		return mav;
+		try {
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("home");
+			return mav;
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
 	}
 
 	@GetMapping("/login")
 	public ModelAndView handleDisplayLoginPage() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("login");
-		mav.addObject("credentials", new Credentials());
-		httpSession.removeAttribute("sessionUser");
-		return mav;
+		try {
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("userLogin");
+			mav.addObject("credentials", new Credentials());
+			httpSession.removeAttribute("sessionUser");
+			return mav;
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
 	}
 
 	/**
@@ -59,19 +67,19 @@ public class UserController {
 	@PostMapping("/handleLogin")
 	public ModelAndView handleLogin(@Valid @ModelAttribute("credentials") Credentials credentials,
 			BindingResult result) {
-		if (result.hasErrors()) {
-			return new ModelAndView("login", "credentials", credentials);
+		try {
+			if (result.hasErrors()) {
+				return new ModelAndView("userLogin", "credentials", credentials);
+			}
+			User user = userBusinessService.loginUser(new User(-1, "", "", "", "", credentials));
+			if (user == null) {
+				return new ModelAndView("userLogin", "user", user);
+			}
+			httpSession.setAttribute("sessionUser", user);
+			return new ModelAndView("home", "credentials", user.getCredentials());
+		} catch (Exception e) {
+			return new ModelAndView("error");
 		}
-
-		User user = new User(-1, "", "", "", "", credentials);
-		user = userBusinessService.loginUser(user);
-
-		if (user == null) {
-			return new ModelAndView("login", "user", user);
-		}
-
-		httpSession.setAttribute("sessionUser", user);
-		return new ModelAndView("home", "credentials", user.getCredentials());
 	}
 
 	@GetMapping("/handleLogin")
@@ -81,11 +89,15 @@ public class UserController {
 
 	@GetMapping("/register")
 	public ModelAndView handleDisplayRegistrationPage() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("register");
-		mav.addObject("user", new User());
-		mav.addObject("credentials", new Credentials());
-		return mav;
+		try {
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("userRegister");
+			mav.addObject("user", new User());
+			mav.addObject("credentials", new Credentials());
+			return mav;
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
 	}
 
 	/**
@@ -96,15 +108,17 @@ public class UserController {
 	 */
 	@PostMapping("/handleRegister")
 	public ModelAndView handleRegister(@Valid @ModelAttribute("user") User user, BindingResult result) {
-		if (result.hasErrors()) {
-			return new ModelAndView("register", "user", user);
+		try {
+			if (result.hasErrors()) {
+				return new ModelAndView("userRegister", "user", user);
+			}
+			if (userBusinessService.registerUser(user) != 1) {
+				return new ModelAndView("userRegister", "user", user);
+			}
+			return new ModelAndView("login", "credentials", user.getCredentials());
+		} catch (Exception e) {
+			return new ModelAndView("error");
 		}
-
-		if (userBusinessService.registerUser(user) != 1) {
-			return new ModelAndView("register", "user", user);
-		}
-
-		return new ModelAndView("login", "credentials", user.getCredentials());
 	}
 
 	@GetMapping("/handleRegister")

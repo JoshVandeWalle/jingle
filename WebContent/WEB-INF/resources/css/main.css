@@ -6,6 +6,18 @@
 	border: none;
 }
 
+.link-button{
+	text-decoration: underline;
+	color: red;
+	background: none;
+	border: none;
+}
+
+.link-button:hover {
+	cursor: pointer;
+	color: purple; 
+}
+
 .welcome-msg {
 	float: left!important;
 	color: white;
@@ -38,3 +50,19 @@ li a:hover {
 	background-color: pink;
 	cursor: pointer;
 }
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	text-align: left;
+	padding: 8px;
+}
+
+tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+

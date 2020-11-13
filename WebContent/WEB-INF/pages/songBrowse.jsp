@@ -8,7 +8,6 @@
 </script>
 <table>
 	<tr>
-		<th></th>
 		<th>Title</th>
 		<th>Artist</th>
 		<th>Album</th>
@@ -18,7 +17,7 @@
 	</tr>
 	<c:forEach var="song" items="${songs}">
 		<tr>
-			<td><form:form method="POST" action="song"
+			<!-- <td><form:form method="POST" action="song"
 					modelAttribute="viewSong">
 					<form:input type="hidden" path="id" value="${song.id}" />
 					<form:input type="hidden" path="title" value="${song.title}" />
@@ -29,8 +28,19 @@
 					<form:input type="hidden" path="genre" value="${song.genre}" />
 					<form:input type="hidden" path="users_id" value="${song.users_id}" />
 					<input class="main-button" type="submit" value="View" />
+				</form:form></td> -->
+			<td><form:form method="POST" action="song"
+					modelAttribute="viewSong">
+					<form:input type="hidden" path="id" value="${song.id}" />
+					<form:input type="hidden" path="title" value="${song.title}" />
+					<form:input type="hidden" path="artist" value="${song.artist}" />
+					<form:input type="hidden" path="album" value="${song.album}" />
+					<form:input type="hidden" path="year" value="${song.year}" />
+					<form:input type="hidden" path="length" value="${song.length}" />
+					<form:input type="hidden" path="genre" value="${song.genre}" />
+					<form:input type="hidden" path="users_id" value="${song.users_id}" />
+					<input class="link-button" type="submit" value="${song.title}" />
 				</form:form></td>
-			<td><c:out value="${song.title}" /></td>
 			<td><c:out value="${song.artist}" /></td>
 			<td><c:out value="${song.album}" /></td>
 			<td><c:out value="${song.year}" /></td>

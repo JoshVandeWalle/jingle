@@ -51,17 +51,17 @@ li a:hover {
 	cursor: pointer;
 }
 
-table {
+.main-table {
 	border-collapse: collapse;
 	width: 100%;
 }
 
-th, td {
+.main-table th, td {
 	text-align: left;
 	padding: 8px;
 }
 
-tr:nth-child(even) {
+.main-table tr:nth-child(even) {
 	background-color: #f2f2f2;
 }
 

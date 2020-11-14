@@ -6,7 +6,7 @@
 		window.location.href = "../song/handleDisplayUploadPage";
 	}
 </script>
-<table>
+<table class='main-table'>
 	<tr>
 		<th>Title</th>
 		<th>Artist</th>

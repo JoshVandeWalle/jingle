@@ -46,10 +46,10 @@ public class SongController {
 	 * @return ModelAndView the container with the correct view and data
 	 */
 	@GetMapping("/browse")
-	public ModelAndView handleRetrieveAllSongs() {
+	public ModelAndView handleDisplayBrowseAllSongs() {
 		try {
 			ModelAndView mav = new ModelAndView();
-			mav.setViewName("songBrowse");
+			mav.setViewName("song_browseAll");
 			mav.addObject("songs", songBusinessService.getAllSongs());
 			mav.addObject("viewSong", new Song());
 			return mav;
@@ -69,10 +69,10 @@ public class SongController {
 	 */
 
 	@GetMapping("/upload")
-	public ModelAndView handleDisplayUploadPage() {
+	public ModelAndView handleDisplayUploadForm() {
 		try {
 			ModelAndView mav = new ModelAndView();
-			mav.setViewName("songUpload");
+			mav.setViewName("song_uploadForm");
 			mav.addObject("song",
 					new Song(-1, "", ((User) httpSession.getAttribute("sessionUser")).getCredentials().getUsername(),
 							"", "", "", "", -1));
@@ -95,7 +95,7 @@ public class SongController {
 	public ModelAndView handleUploadSong(@Valid @ModelAttribute("song") Song song, BindingResult result) {
 		try {
 			if (result.hasErrors()) {
-				return this.handleDisplayUploadPage();
+				return this.handleDisplayUploadForm();
 			}
 			song.setUsers_id(((User) httpSession.getAttribute("sessionUser")).getId());
 			if (songBusinessService.uploadSong(song) != 1) {
@@ -103,17 +103,17 @@ public class SongController {
 				mav.setViewName("error");
 				return mav;
 			}
-			return this.handleDisplayUploadsPage();
+			return this.handleDisplayBrowseMyUploads();
 		} catch (Exception e) {
 			return new ModelAndView("error");
 		}
 	}
 
 	@GetMapping("/uploads")
-	public ModelAndView handleDisplayUploadsPage() {
+	public ModelAndView handleDisplayBrowseMyUploads() {
 		try {
 			ModelAndView mav = new ModelAndView();
-			mav.setViewName("songsUploaded");
+			mav.setViewName("song_browseMyUploads");
 			mav.addObject("songs", songBusinessService.getSongsByUsersId(
 					new Song(-1, "", "", "", "", "", "", ((User) httpSession.getAttribute("sessionUser")).getId())));
 			mav.addObject("viewSong", new Song());
@@ -129,9 +129,9 @@ public class SongController {
 			ModelAndView mav = new ModelAndView();
 			mav.addObject("song", song);
 			if (((User) httpSession.getAttribute("sessionUser")).getId() == song.getUsers_id()) {
-				mav.setViewName("songOwned");
+				mav.setViewName("song_viewMyUpload");
 			} else {
-				mav.setViewName("song");
+				mav.setViewName("song_view");
 			}
 			return mav;
 		} catch (Exception e) {
@@ -140,10 +140,10 @@ public class SongController {
 	}
 
 	@PostMapping("/edit")
-	public ModelAndView handleDisplayEditSong(@ModelAttribute("song") Song song) {
+	public ModelAndView handleDisplayEditForm(@ModelAttribute("song") Song song) {
 		try {
 			ModelAndView mav = new ModelAndView();
-			mav.setViewName("songEdit");
+			mav.setViewName("song_editForm");
 			mav.addObject("song", song);
 			return mav;
 		} catch (Exception e) {
@@ -155,14 +155,14 @@ public class SongController {
 	public ModelAndView handleEditSong(@Valid @ModelAttribute("song") Song song, BindingResult result) {
 		try {
 			if (result.hasErrors()) {
-				return this.handleDisplayEditSong(song);
+				return this.handleDisplayEditForm(song);
 			}
 			if (songBusinessService.editSong(song) != 1) {
 				ModelAndView mav = new ModelAndView();
 				mav.setViewName("error");
 				return mav;
 			}
-			return this.handleDisplayUploadsPage();
+			return this.handleDisplayBrowseMyUploads();
 		}
 
 		catch (Exception e) {
@@ -171,10 +171,10 @@ public class SongController {
 	}
 
 	@PostMapping("/delete")
-	public ModelAndView handleDisplayDeleteSong(@ModelAttribute("song") Song song) {
+	public ModelAndView handleDisplayDeleteForm(@ModelAttribute("song") Song song) {
 		try {
 			ModelAndView mav = new ModelAndView();
-			mav.setViewName("songDelete");
+			mav.setViewName("song_deleteForm");
 			mav.addObject("song", song);
 			return mav;
 		} catch (Exception e) {
@@ -190,7 +190,7 @@ public class SongController {
 				mav.setViewName("error");
 				return mav;
 			}
-			return this.handleDisplayUploadsPage();
+			return this.handleDisplayBrowseMyUploads();
 		}
 
 		catch (Exception e) {

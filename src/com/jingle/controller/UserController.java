@@ -35,7 +35,7 @@ public class UserController {
 	}
 
 	@GetMapping(value = { "/", "/home" })
-	public ModelAndView handleHomePageDisplay() {
+	public ModelAndView handleDisplayHomePage() {
 		try {
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("home");
@@ -46,10 +46,10 @@ public class UserController {
 	}
 
 	@GetMapping("/login")
-	public ModelAndView handleDisplayLoginPage() {
+	public ModelAndView handleDisplayLoginForm() {
 		try {
 			ModelAndView mav = new ModelAndView();
-			mav.setViewName("userLogin");
+			mav.setViewName("user_login");
 			mav.addObject("credentials", new Credentials());
 			httpSession.removeAttribute("sessionUser");
 			return mav;
@@ -65,15 +65,15 @@ public class UserController {
 	 * @return ModelAndView the appropriate view and model combo
 	 */
 	@PostMapping("/handleLogin")
-	public ModelAndView handleLogin(@Valid @ModelAttribute("credentials") Credentials credentials,
+	public ModelAndView handleLoginUser(@Valid @ModelAttribute("credentials") Credentials credentials,
 			BindingResult result) {
 		try {
 			if (result.hasErrors()) {
-				return new ModelAndView("userLogin", "credentials", credentials);
+				return new ModelAndView("user_login", "credentials", credentials);
 			}
 			User user = userBusinessService.loginUser(new User(-1, "", "", "", "", credentials));
 			if (user == null) {
-				return new ModelAndView("userLogin", "user", user);
+				return new ModelAndView("user_login", "user", user);
 			}
 			httpSession.setAttribute("sessionUser", user);
 			return new ModelAndView("home", "credentials", user.getCredentials());
@@ -84,14 +84,14 @@ public class UserController {
 
 	@GetMapping("/handleLogin")
 	public ModelAndView handleRefreshLogin() {
-		return this.handleDisplayLoginPage();
+		return this.handleDisplayLoginForm();
 	}
 
 	@GetMapping("/register")
-	public ModelAndView handleDisplayRegistrationPage() {
+	public ModelAndView handleDisplayRegistrationForm() {
 		try {
 			ModelAndView mav = new ModelAndView();
-			mav.setViewName("userRegister");
+			mav.setViewName("user_registration");
 			mav.addObject("user", new User());
 			mav.addObject("credentials", new Credentials());
 			return mav;
@@ -107,13 +107,13 @@ public class UserController {
 	 * @return ModelAndView the appropriate view and model combo
 	 */
 	@PostMapping("/handleRegister")
-	public ModelAndView handleRegister(@Valid @ModelAttribute("user") User user, BindingResult result) {
+	public ModelAndView handleRegisterUser(@Valid @ModelAttribute("user") User user, BindingResult result) {
 		try {
 			if (result.hasErrors()) {
-				return new ModelAndView("userRegister", "user", user);
+				return new ModelAndView("user_registration", "user", user);
 			}
 			if (userBusinessService.registerUser(user) != 1) {
-				return new ModelAndView("userRegister", "user", user);
+				return new ModelAndView("user_registration", "user", user);
 			}
 			return new ModelAndView("login", "credentials", user.getCredentials());
 		} catch (Exception e) {
@@ -123,7 +123,7 @@ public class UserController {
 
 	@GetMapping("/handleRegister")
 	public ModelAndView handleRefreshRegister() {
-		return this.handleDisplayRegistrationPage();
+		return this.handleDisplayRegistrationForm();
 	}
 
 }

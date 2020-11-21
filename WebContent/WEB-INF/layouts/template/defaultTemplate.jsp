@@ -5,6 +5,10 @@
 <head>
 <title>Jingle</title>
 
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+
 <spring:url value="/resources/css/main.css" var="mainCss" />
 <spring:url value="/resources/js/main.js" var="mainJs" />
 

@@ -11,6 +11,7 @@
 	<form:input type="hidden" path="users_id" value="${song.users_id}" />
 	<input class="main-button" type="submit" value="Yes" />
 </form:form>
+
 <form:form method="GET" action="uploads">
 	<input class="main-button" type="submit" value="No" />
 </form:form>

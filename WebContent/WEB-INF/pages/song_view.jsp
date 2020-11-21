@@ -1,7 +1,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <h2>View Song</h2>
-<table class='main-table'>
+<table id="song" class="display">
 	<tr>
 		<th>Title</th>
 		<th>Artist</th>
@@ -19,3 +19,13 @@
 		<td><c:out value="${song.genre}" /></td>
 	</tr>
 </table>
+
+<form:form method="GET" action="browse">
+	<input class="main-button" type="submit" value="Back" />
+</form:form>
+
+<script>
+	$(document).ready(function() {
+		$('#song').DataTable();
+	});
+</script>

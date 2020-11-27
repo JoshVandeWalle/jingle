@@ -71,6 +71,14 @@
 	</tx:advice>
 
 	<!-- Application Spring Beans -->
+	
+	<!-- Rest Services -->
+	<bean id="songService"
+		class="com.jingle.service.SongService">
+		<property name="songBusinessService"
+			ref="songBusinessService" />
+	</bean>
+	
 	<!-- Controllers -->
 	<bean id="userController"
 		class="com.jingle.controller.UserController">

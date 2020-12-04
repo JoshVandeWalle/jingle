@@ -34,17 +34,6 @@ public class UserController {
 		this.userBusinessService = userBusinessService;
 	}
 
-	@GetMapping(value = { "/", "/home" })
-	public ModelAndView handleDisplayHomePage() {
-		try {
-			ModelAndView mav = new ModelAndView();
-			mav.setViewName("home");
-			return mav;
-		} catch (Exception e) {
-			return new ModelAndView("error");
-		}
-	}
-
 	@GetMapping("/login")
 	public ModelAndView handleDisplayLoginForm() {
 		try {

@@ -6,7 +6,7 @@
 	border: none;
 }
 
-.link-button{
+.link-button {
 	text-decoration: underline;
 	color: red;
 	background: none;
@@ -15,15 +15,15 @@
 
 .link-button:hover {
 	cursor: pointer;
-	color: purple; 
+	color: purple;
 }
 
 .welcome-msg {
-	float: left!important;
+	float: left !important;
 	color: white;
 	font-size: 20px;
 	font-weight: bold;
-	padding-top: 10px!important;
+	padding-top: 10px !important;
 }
 
 li {
@@ -52,8 +52,8 @@ li a:hover {
 }
 
 .main-table {
-	width: 80%!important;
-	border: 2px solid black!important;
+	width: 80% !important;
+	border: 2px solid black !important;
 }
 
 .main-table th, td {
@@ -64,5 +64,3 @@ li a:hover {
 .main-table tr:nth-child(even) {
 	background-color: #f2f2f2;
 }
-
-

@@ -9,9 +9,9 @@
 	<form:input type="hidden" path="length" value="${song.length}" />
 	<form:input type="hidden" path="genre" value="${song.genre}" />
 	<form:input type="hidden" path="users_id" value="${song.users_id}" />
-	<input class="main-button" type="submit" value="Yes" />
+	<button type="submit" class="btn btn-danger">Yes</button>
 </form:form>
 
 <form:form method="GET" action="uploads">
-	<input class="main-button" type="submit" value="No" />
+	<button type="submit" class="btn btn-danger">No</button>
 </form:form>

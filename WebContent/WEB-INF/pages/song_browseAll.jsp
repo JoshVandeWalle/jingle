@@ -15,8 +15,7 @@
 	<tbody>
 		<c:forEach var="song" items="${songs}">
 			<tr onclick=goToSong(${song.id})>
-				<form:form id="${song.id}" method="POST" action="song"
-					modelAttribute="viewSong">
+				<form:form id="${song.id}" method="POST" action="song" modelAttribute="viewSong">
 					<form:input type="hidden" path="id" value="${song.id}" />
 					<form:input type="hidden" path="title" value="${song.title}" />
 					<form:input type="hidden" path="artist" value="${song.artist}" />
@@ -36,10 +35,6 @@
 		</c:forEach>
 	</tbody>
 </table>
-
-<form:form method="GET" action="upload">
-	<input class="main-button" type="submit" value="Upload" />
-</form:form>
 
 <script>
 	$(document).ready(function() {

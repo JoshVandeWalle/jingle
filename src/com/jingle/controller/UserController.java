@@ -115,7 +115,7 @@ public class UserController {
 			if (userBusinessService.registerUser(user) != 1) {
 				return new ModelAndView("user_registration", "user", user);
 			}
-			return new ModelAndView("login", "credentials", user.getCredentials());
+			return new ModelAndView("user_login", "credentials", user.getCredentials());
 		} catch (Exception e) {
 			return new ModelAndView("error");
 		}

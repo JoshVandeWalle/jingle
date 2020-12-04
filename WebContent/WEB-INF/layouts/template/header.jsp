@@ -1,21 +1,32 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<ul>
-	<c:choose>
-		<c:when test="${sessionUser != null}">
-			<li class='welcome-msg'>Welcome to Jingle,
-				${sessionUser.credentials.username}</li>
-			<li><a href='../user/login'>Sign Out</a></li>
-			<li><a href='../song/uploads'>My Uploads</a></li>
-			<li><a href='../user/library'>Library</a></li>
-			<li><a href='../song/browse'>Browse</a></li>
-			<li><a href='../user/home'>Home</a></li>
-		</c:when>
-		<c:otherwise>
-			<li class='welcome-msg'>Welcome to Jingle</li>
-			<li><a href='../user/register'>Sign up</a></li>
-			<li><a href='../user/login'>Sign in</a></li>
-		</c:otherwise>
-	</c:choose>
-
-</ul>
+<nav class="navbar navbar-expand-md navbar-dark bg-danger">
+		<a href="#" class="navbar-brand"> Jingle</a>
+		<button type="button" class="navbar-toggler" data-toggle="collapse"
+			data-target="#navbarCollapse">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<c:choose>
+				<c:when test="${sessionUser != null}">
+					<div class="navbar-nav">
+						<a href="../user/home" class="nav-item nav-link active">Home</a> 
+						<a href="../song/browse" class="nav-item nav-link active">Browse</a> 
+						<a href="../user/library"class="nav-item nav-link active">Library</a>
+						<a href="../song/uploads"class="nav-item nav-link active">My Uploads</a>
+					</div>
+					<div class="navbar-nav ml-auto">				
+						<a href="../user/profile" class="nav-item nav-link active">${sessionUser.credentials.username}</a>
+						<a href="#" class="nav-item nav-link active">|</a>
+						<a href="../user/login" class="nav-item nav-link active">Sign out</a> 
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="navbar-nav ml-auto">
+						<a href="../user/login" class="nav-item nav-link active">Sign in</a> 
+						<a href="../user/register" class="nav-item nav-link active">Sign up</a> 
+					</div>
+				</c:otherwise>
+			</c:choose>
+		</div>
+</nav>
 

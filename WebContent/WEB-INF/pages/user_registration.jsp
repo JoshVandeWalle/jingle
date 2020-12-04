@@ -1,42 +1,50 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<h2>Sign-up for Jingle</h2>
-<form:form method="POST" action="handleRegister" modelAttribute="user">
-	<table>
-		<tr>
-			<td><form:label path="credentials.username">Username</form:label></td>
-			<td><form:input path="credentials.username"
-					placeholder="Username" /></td>
-		</tr>
-		<tr>
-			<td><form:label path="credentials.password">Password</form:label></td>
-			<td><form:input path="credentials.password"
-					placeholder="Password" type="password" /></td>
-		</tr>
-		<tr>
-			<td><form:label path="firstName">First Name</form:label></td>
-			<td><form:input path="firstName" placeholder="First" /></td>
-		</tr>
-		<tr>
-			<td><form:label path="lastName">Last Name</form:label></td>
-			<td><form:input path="lastName" placeholder="Last" /></td>
-		</tr>
-		<tr>
-			<td><form:label path="email">Email</form:label></td>
-			<td><form:input path="email" placeholder="email@email.com" /></td>
-		</tr>
-		<tr>
-			<td><form:label path="phone">Phone Number</form:label></td>
-			<td><form:input path="phone" placeholder="1234567890" /></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><input class="main-button" type="submit" value="Submit" /></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><form:errors path="*" /></td>
-		</tr>
-	</table>
+<h2>Registration</h2>
+<form:form method="POST" action="handleRegister" modelAttribute="user" class="w-50">
+	<div class="form-group row">
+		<form:label path="credentials.username" class="col-sm-2 col-form-label">Username</form:label>
+		<div class="col-sm-10">
+			<form:input path="credentials.username" type="text" class="form-control" placeholder="Username" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<form:label path="credentials.password" class="col-sm-2 col-form-label">Password</form:label>
+		<div class="col-sm-10">
+			<form:input path="credentials.password" type="password" class="form-control" placeholder="Password" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<form:label path="firstName" class="col-sm-2 col-form-label">First Name</form:label>
+		<div class="col-sm-10">
+			<form:input path="firstName" type="text" class="form-control" placeholder="First Name" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<form:label path="lastName" class="col-sm-2 col-form-label">Last Name</form:label>
+		<div class="col-sm-10">
+			<form:input path="lastName" type="text" class="form-control" placeholder="Last Name" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<form:label path="email" class="col-sm-2 col-form-label">Email</form:label>
+		<div class="col-sm-10">
+			<form:input path="email" type="email" class="form-control" placeholder="email@email.com" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<form:label path="phone" class="col-sm-2 col-form-label">Phone Number</form:label>
+		<div class="col-sm-10">
+			<form:input path="phone" type="number" class="form-control" placeholder="1234567890" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-10 offset-sm-2">
+			<form:errors path="*" />
+		</div>
+	</div>
+	<div class="justify-content-center">
+		<button type="submit" class="btn btn-danger">Sign up</button>
+	</div>
 </form:form>
 
 Already have an account?

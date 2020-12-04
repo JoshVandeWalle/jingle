@@ -29,7 +29,7 @@
 	<form:input type="hidden" path="length" value="${song.length}" />
 	<form:input type="hidden" path="genre" value="${song.genre}" />
 	<form:input type="hidden" path="users_id" value="${song.users_id}" />
-	<input class="main-button" type="submit" value="Edit" />
+	<button type="submit" class="btn btn-danger">Edit</button>
 </form:form>
 
 <form:form method="POST" action="delete" modelAttribute="song">
@@ -41,11 +41,11 @@
 	<form:input type="hidden" path="length" value="${song.length}" />
 	<form:input type="hidden" path="genre" value="${song.genre}" />
 	<form:input type="hidden" path="users_id" value="${song.users_id}" />
-	<input class="main-button" type="submit" value="Delete" />
+	<button type="submit" class="btn btn-danger">Delete</button>
 </form:form>
 
 <form:form method="GET" action="uploads">
-	<input class="main-button" type="submit" value="Back" />
+	<button type="submit" class="btn btn-danger">Back</button>
 </form:form>
 
 <script>

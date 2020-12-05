@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/home")
 public class HomeController {
-	@GetMapping(value = { "/"})
+	@GetMapping(value = { "/" })
 	public ModelAndView handleDisplayHomePage() {
 		try {
 			ModelAndView mav = new ModelAndView();

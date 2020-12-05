@@ -31,8 +31,7 @@ public class Song {
 	private int users_id;
 
 	// Constructor with all fields
-	public Song(int id, String title, String artist, String album, String year, String length, String genre,
-			int users_id) {
+	public Song(int id, String title, String artist, String album, String year, String length, String genre, int users_id) {
 		this.id = id;
 		this.title = title;
 		this.artist = artist;
@@ -133,7 +132,6 @@ public class Song {
 
 	@Override
 	public String toString() {
-		return "Song [id=" + id + ", title=" + title + ", artist=" + artist + ", album=" + album + ", year=" + year
-				+ ", length=" + length + ", genre=" + genre + ", users_id=" + users_id + "]";
+		return "Song [id=" + id + ", title=" + title + ", artist=" + artist + ", album=" + album + ", year=" + year + ", length=" + length + ", genre=" + genre + ", users_id=" + users_id + "]";
 	}
 }

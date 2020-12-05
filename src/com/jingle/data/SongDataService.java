@@ -59,8 +59,7 @@ public class SongDataService implements SongDataInterface {
 			return null;
 		}
 
-		return new Song(srs.getInt("id"), srs.getString("title"), srs.getString("artist"), srs.getString("album"),
-				srs.getString("year"), srs.getString("length"), srs.getString("genre"), srs.getInt("users_id"));
+		return new Song(srs.getInt("id"), srs.getString("title"), srs.getString("artist"), srs.getString("album"), srs.getString("year"), srs.getString("length"), srs.getString("genre"), srs.getInt("users_id"));
 	}
 
 	public List<Song> readByUsersId(Song song) {
@@ -71,19 +70,10 @@ public class SongDataService implements SongDataInterface {
 		List<Song> result = new ArrayList<Song>();
 
 		while (srs.next()) {
-			result.add(new Song(srs.getInt("id"), srs.getString("title"), srs.getString("artist"),
-					srs.getString("album"), srs.getString("year"), srs.getString("length"), srs.getString("genre"),
-					srs.getInt("users_id")));
+			result.add(new Song(srs.getInt("id"), srs.getString("title"), srs.getString("artist"), srs.getString("album"), srs.getString("year"), srs.getString("length"), srs.getString("genre"), srs.getInt("users_id")));
 		}
-		
-		return result;
-	}
 
-	/**
-	 * not implemented
-	 */
-	public List<Song> readByTitle(Song song) {
-		return null;
+		return result;
 	}
 
 	/**
@@ -102,9 +92,7 @@ public class SongDataService implements SongDataInterface {
 		List<Song> result = new ArrayList<Song>();
 
 		while (srs.next()) {
-			result.add(new Song(srs.getInt("id"), srs.getString("title"), srs.getString("artist"),
-					srs.getString("album"), srs.getString("year"), srs.getString("length"), srs.getString("genre"),
-					srs.getInt("users_id")));
+			result.add(new Song(srs.getInt("id"), srs.getString("title"), srs.getString("artist"), srs.getString("album"), srs.getString("year"), srs.getString("length"), srs.getString("genre"), srs.getInt("users_id")));
 		}
 
 		return result;

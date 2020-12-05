@@ -54,8 +54,7 @@ public class UserController {
 	 * @return ModelAndView the appropriate view and model combo
 	 */
 	@PostMapping("/handleLogin")
-	public ModelAndView handleLoginUser(@Valid @ModelAttribute("credentials") Credentials credentials,
-			BindingResult result) {
+	public ModelAndView handleLoginUser(@Valid @ModelAttribute("credentials") Credentials credentials, BindingResult result) {
 		try {
 			if (result.hasErrors()) {
 				return new ModelAndView("user_login", "credentials", credentials);

@@ -37,17 +37,17 @@ public class User {
 		this.credentials = credentials;
 		this.credentials_id = credentials.getId();
 	}
-	
+
 	// Constructor with all fields (Credentials ID)
-		public User(int id, String firstName, String lastName, String email, String phone, int credentials_id) {
-			this.id = id;
-			this.firstName = firstName;
-			this.lastName = lastName;
-			this.email = email;
-			this.phone = phone;
-			this.credentials = null;
-			this.credentials_id = credentials_id;
-		}
+	public User(int id, String firstName, String lastName, String email, String phone, int credentials_id) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phone = phone;
+		this.credentials = null;
+		this.credentials_id = credentials_id;
+	}
 
 	// Constructor without id
 	public User(String firstName, String lastName, String email, String phone, Credentials credentials) {
@@ -129,8 +129,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", phone=" + phone + ", credentials=" + credentials + "]";
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phone=" + phone + ", credentials=" + credentials + "]";
 	}
 
 }

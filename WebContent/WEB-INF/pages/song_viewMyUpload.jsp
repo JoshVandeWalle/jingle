@@ -22,25 +22,11 @@
 
 <form:form method="POST" action="edit" modelAttribute="song">
 	<form:input type="hidden" path="id" value="${song.id}" />
-	<form:input type="hidden" path="title" value="${song.title}" />
-	<form:input type="hidden" path="artist" value="${song.artist}" />
-	<form:input type="hidden" path="album" value="${song.album}" />
-	<form:input type="hidden" path="year" value="${song.year}" />
-	<form:input type="hidden" path="length" value="${song.length}" />
-	<form:input type="hidden" path="genre" value="${song.genre}" />
-	<form:input type="hidden" path="users_id" value="${song.users_id}" />
 	<button type="submit" class="btn btn-danger">Edit</button>
 </form:form>
 
 <form:form method="POST" action="delete" modelAttribute="song">
 	<form:input type="hidden" path="id" value="${song.id}" />
-	<form:input type="hidden" path="title" value="${song.title}" />
-	<form:input type="hidden" path="artist" value="${song.artist}" />
-	<form:input type="hidden" path="album" value="${song.album}" />
-	<form:input type="hidden" path="year" value="${song.year}" />
-	<form:input type="hidden" path="length" value="${song.length}" />
-	<form:input type="hidden" path="genre" value="${song.genre}" />
-	<form:input type="hidden" path="users_id" value="${song.users_id}" />
 	<button type="submit" class="btn btn-danger">Delete</button>
 </form:form>
 

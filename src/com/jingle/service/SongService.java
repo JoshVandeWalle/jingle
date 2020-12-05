@@ -27,16 +27,15 @@ public class SongService {
 	public void setSongBusinessService(SongBusinessInterface songBusinessService) {
 		this.songBusinessService = songBusinessService;
 	}
+
 	// get all songs method
 	@GetMapping("/retrieveAll")
-	public RestDto<Song> handleRetrieveAll()
-	{
+	public RestDto<Song> handleRetrieveAll() {
 		// use try catch to handle exceptions
-		try 
-		{
+		try {
 			// pass control to business layer to retrieve all songs
 			List<Song> songs = songBusinessService.getAllSongs();
-			
+
 			if (songs.size() > 0)
 				// If all goes right, send the songs
 				return new RestDto<Song>(200, "OK", songs);
@@ -44,10 +43,9 @@ public class SongService {
 				// no songs found
 				return new RestDto<Song>(404, "Songs not found", songs);
 		}
-		
+
 		// handle exceptions here
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			return new RestDto<Song>(500, "Internal error", null);
 		}
 	}

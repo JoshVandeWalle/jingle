@@ -15,7 +15,7 @@ public interface CredentialsDataInterface {
 	public int create(Credentials credentials);
 
 	public Credentials read(Credentials credentials);
-	
+
 	public Credentials readByUsernamePassword(Credentials credentials);
 
 	public List<Credentials> readAll();

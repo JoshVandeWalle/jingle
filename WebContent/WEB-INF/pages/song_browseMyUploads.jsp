@@ -17,13 +17,6 @@
 			<tr onclick=goToSong(${song.id})>
 				<form:form id="${song.id}" method="POST" action="song" modelAttribute="viewSong">
 					<form:input type="hidden" path="id" value="${song.id}" />
-					<form:input type="hidden" path="title" value="${song.title}" />
-					<form:input type="hidden" path="artist" value="${song.artist}" />
-					<form:input type="hidden" path="album" value="${song.album}" />
-					<form:input type="hidden" path="year" value="${song.year}" />
-					<form:input type="hidden" path="length" value="${song.length}" />
-					<form:input type="hidden" path="genre" value="${song.genre}" />
-					<form:input type="hidden" path="users_id" value="${song.users_id}" />
 				</form:form>
 				<td><c:out value="${song.title}" /></td>
 				<td><c:out value="${song.artist}" /></td>

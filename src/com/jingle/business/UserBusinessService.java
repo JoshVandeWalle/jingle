@@ -87,11 +87,11 @@ public class UserBusinessService implements UserBusinessInterface {
 	public List<User> getAllUsers() {
 
 		List<User> users = userDataService.readAll();
-		
-		for(User user : users) {
+
+		for (User user : users) {
 			user.setCredentials(credentialsDataService.read(new Credentials(user.getCredentials_id(), "", "")));
 		}
-		
+
 		return users;
 	}
 
@@ -105,11 +105,11 @@ public class UserBusinessService implements UserBusinessInterface {
 	 * @return int	result
 	 */
 	public int editUser(User user) {
-		
+
 		if (credentialsDataService.update(user.getCredentials()) != 1) {
 			return 0;
 		}
-		
+
 		return userDataService.update(user);
 	}
 
@@ -123,11 +123,11 @@ public class UserBusinessService implements UserBusinessInterface {
 	 * @return int	result
 	 */
 	public int removeUser(User user) {
-		
+
 		if (credentialsDataService.delete(user.getCredentials()) != 1) {
 			return 0;
 		}
-		
+
 		return userDataService.delete(user);
 	}
 

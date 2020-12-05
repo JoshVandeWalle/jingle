@@ -110,8 +110,7 @@ public class CredentialsDataService implements CredentialsDataInterface {
 		List<Credentials> result = new ArrayList<Credentials>();
 
 		while (srs.next()) {
-			Credentials credentials = new Credentials(srs.getInt("id"), srs.getString("username"),
-					srs.getString("password"));
+			Credentials credentials = new Credentials(srs.getInt("id"), srs.getString("username"), srs.getString("password"));
 			result.add(credentials);
 		}
 

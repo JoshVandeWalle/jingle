@@ -21,7 +21,7 @@
 </table>
 
 <form:form method="GET" action="browse">
-	<input class="main-button" type="submit" value="Back" />
+	<button type="submit" class="btn btn-danger">Back</button>
 </form:form>
 
 <script>

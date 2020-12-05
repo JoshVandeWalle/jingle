@@ -36,6 +36,17 @@ public class SongBusinessService implements SongBusinessInterface {
 
 	/**
 	 * Takes in a song. 
+	 * Returns the songDataService read method with song as the parameter. 
+	 * 
+	 * @param 	song		song with id to search
+	 * @return 	Song		result
+	 */
+	public Song getSong(Song song) {
+		return songDataService.read(song);
+	}
+
+	/**
+	 * Takes in a song. 
 	 * Returns the songDataService readByUsersId method with song as the parameter. 
 	 * 
 	 * @param 	song		song with users_id to search
@@ -43,17 +54,6 @@ public class SongBusinessService implements SongBusinessInterface {
 	 */
 	public List<Song> getSongsByUsersId(Song song) {
 		return songDataService.readByUsersId(song);
-	}
-
-	/**
-	 * Takes in a song. 
-	 * Returns the songDataService readByTitle method with song as the parameter. 
-	 * 
-	 * @param 	song		song with title to search
-	 * @return 	List<Song>	list of results
-	 */
-	public List<Song> getSongsByTitle(Song song) {
-		return songDataService.readByTitle(song);
 	}
 
 	/**

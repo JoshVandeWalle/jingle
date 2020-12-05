@@ -73,9 +73,7 @@ public class SongController {
 		try {
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("song_uploadForm");
-			mav.addObject("song",
-					new Song(-1, "", ((User) httpSession.getAttribute("sessionUser")).getCredentials().getUsername(),
-							"", "", "", "", -1));
+			mav.addObject("song", new Song(-1, "", ((User) httpSession.getAttribute("sessionUser")).getCredentials().getUsername(), "", "", "", "", -1));
 			return mav;
 		} catch (Exception e) {
 			return new ModelAndView("error");
@@ -114,8 +112,7 @@ public class SongController {
 		try {
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("song_browseMyUploads");
-			mav.addObject("songs", songBusinessService.getSongsByUsersId(
-					new Song(-1, "", "", "", "", "", "", ((User) httpSession.getAttribute("sessionUser")).getId())));
+			mav.addObject("songs", songBusinessService.getSongsByUsersId(new Song(-1, "", "", "", "", "", "", ((User) httpSession.getAttribute("sessionUser")).getId())));
 			mav.addObject("viewSong", new Song());
 			return mav;
 		} catch (Exception e) {
@@ -126,6 +123,7 @@ public class SongController {
 	@PostMapping("/song")
 	public ModelAndView handleDisplaySong(@ModelAttribute("song") Song song) {
 		try {
+			song = songBusinessService.getSong(song);
 			ModelAndView mav = new ModelAndView();
 			mav.addObject("song", song);
 			if (((User) httpSession.getAttribute("sessionUser")).getId() == song.getUsers_id()) {
@@ -144,7 +142,7 @@ public class SongController {
 		try {
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("song_editForm");
-			mav.addObject("song", song);
+			mav.addObject("song", songBusinessService.getSong(song));
 			return mav;
 		} catch (Exception e) {
 			return new ModelAndView("error");
@@ -175,7 +173,7 @@ public class SongController {
 		try {
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("song_deleteForm");
-			mav.addObject("song", song);
+			mav.addObject("song", songBusinessService.getSong(song));
 			return mav;
 		} catch (Exception e) {
 			return new ModelAndView("error");

@@ -25,6 +25,8 @@
 						</div>
 						<div class="col-sm-8">
 							<div class="card-block">
+								<h6 class="m-b-20 p-b-5 b-b-default f-w-600">Username</h6>
+								<p class="m-b-20 p-b-5 justify-content-center f-w-600">${user.credentials.username}</p>
 								<h6 class="m-b-20 p-b-5 b-b-default f-w-600">Email</h6>
 								<p class="m-b-20 p-b-5 justify-content-center f-w-600">${user.email}</p>
 								<h6 class="m-b-20 p-b-5 b-b-default f-w-600">Phone</h6>

@@ -2,7 +2,7 @@
 <div>
 	<c:choose>
 		<c:when test="${sessionUser != null}">
-			<p>Welcome ${sessionUser.credentials.username}, this is the home page.</p>
+			<p>Welcome ${sessionUser.firstName}, this is the home page.</p>
 		</c:when>
 		<c:otherwise>
 			<p>Welcome, this is the home page.</p>

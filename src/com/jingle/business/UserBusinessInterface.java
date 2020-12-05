@@ -15,6 +15,8 @@ public interface UserBusinessInterface {
 	public int registerUser(User user);
 
 	public User loginUser(User user);
+	
+	public User getUser(User user);
 
 	public List<User> getAllUsers();
 

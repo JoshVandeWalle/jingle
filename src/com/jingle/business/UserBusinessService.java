@@ -76,6 +76,21 @@ public class UserBusinessService implements UserBusinessInterface {
 
 		return userDataService.readByCredentialsId(user);
 	}
+	
+	/**
+	 * Take in a user. 
+	 * Set user equal to the userDataService read method using user.
+	 * Set user's credentials  equal to the credentialsDataService read method using the user's credentials_id.
+	 * 
+	 * @param user	user to get
+	 * @return User	result
+	 */
+	public User getUser(User user) {
+		user = userDataService.read(user);
+		user.setCredentials(credentialsDataService.read(new Credentials(user.getCredentials_id(), "", "")));
+		
+		return user;
+	}
 
 	/**
 	 * Select all users with userDataService readAll. 

@@ -70,7 +70,7 @@ public class CredentialsDataService implements CredentialsDataInterface {
 			return null;
 		}
 
-		return new Credentials(srs.getInt("id"), srs.getString("username"), srs.getString("password"));
+		return new Credentials(srs.getInt("id"), srs.getString("username"), srs.getString("password"), srs.getInt("role"));
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class CredentialsDataService implements CredentialsDataInterface {
 			return null;
 		}
 
-		return new Credentials(srs.getInt("id"), srs.getString("username"), srs.getString("password"));
+		return new Credentials(srs.getInt("id"), srs.getString("username"), srs.getString("password"), srs.getInt("role"));
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class CredentialsDataService implements CredentialsDataInterface {
 		List<Credentials> result = new ArrayList<Credentials>();
 
 		while (srs.next()) {
-			Credentials credentials = new Credentials(srs.getInt("id"), srs.getString("username"), srs.getString("password"));
+			Credentials credentials = new Credentials(srs.getInt("id"), srs.getString("username"), srs.getString("password"), srs.getInt("role"));
 			result.add(credentials);
 		}
 

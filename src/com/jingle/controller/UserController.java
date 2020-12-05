@@ -70,11 +70,6 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/handleLogin")
-	public ModelAndView handleRefreshLogin() {
-		return this.handleDisplayLoginForm();
-	}
-
 	@GetMapping("/register")
 	public ModelAndView handleDisplayRegistrationForm() {
 		try {
@@ -108,10 +103,17 @@ public class UserController {
 			return new ModelAndView("error");
 		}
 	}
-
-	@GetMapping("/handleRegister")
-	public ModelAndView handleRefreshRegister() {
-		return this.handleDisplayRegistrationForm();
+	
+	@GetMapping("/profile")
+	public ModelAndView handleDisplayProfilePage() {
+		try {
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("user_myProfile");
+			mav.addObject("user", userBusinessService.getUser((User) httpSession.getAttribute("sessionUser")));
+			return mav;
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
 	}
 
 }

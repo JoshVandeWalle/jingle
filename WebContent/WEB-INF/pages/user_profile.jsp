@@ -77,4 +77,9 @@
 			<button type="submit" class="btn btn-danger">Edit</button>
 		</form:form>
 	</c:when>
+	<c:otherwise>
+		<form:form method="GET" action="../song/browse">
+			<button type="submit" class="btn btn-danger">Back</button>
+		</form:form>
+	</c:otherwise>
 </c:choose>

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.jingle.business.SongBusinessInterface;
 import com.jingle.model.SessionData;
 import com.jingle.model.Song;
+import com.jingle.model.User;
 
 /**
  * @author Josh Van de Walle
@@ -126,6 +127,7 @@ public class SongController {
 			song = songBusinessService.getSong(song);
 			ModelAndView mav = new ModelAndView();
 			mav.addObject("song", song);
+			mav.addObject("user", new User());
 			mav.setViewName("song_view");
 			return mav;
 		} catch (Exception e) {

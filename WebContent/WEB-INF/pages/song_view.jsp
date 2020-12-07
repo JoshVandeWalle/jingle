@@ -42,6 +42,10 @@
 		</form:form>
 	</c:when>
 	<c:otherwise>
+		<form:form method="GET" action="../user/profile" modelAttribute="user">
+			<form:input type="hidden" path="id" value="${song.users_id}" />
+			<button type="submit" class="btn btn-danger">Uploader's Profile</button>
+		</form:form>
 		<form:form method="GET" action="browse">
 			<button type="submit" class="btn btn-danger">Back</button>
 		</form:form>

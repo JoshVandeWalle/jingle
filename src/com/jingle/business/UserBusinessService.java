@@ -121,11 +121,11 @@ public class UserBusinessService implements UserBusinessInterface {
 	 */
 	public int editUser(User user) {
 
-		if (credentialsDataService.update(user.getCredentials()) != 1) {
+		if (credentialsDataService.update(user.getCredentials()) != 1 && userDataService.update(user) != 1) {
 			return 0;
 		}
 
-		return userDataService.update(user);
+		return 1;
 	}
 
 	/**

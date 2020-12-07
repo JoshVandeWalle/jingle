@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jingle.business.SongBusinessInterface;
+import com.jingle.model.SessionData;
 import com.jingle.model.Song;
-import com.jingle.model.User;
 
 /**
  * @author Josh Van de Walle
@@ -73,7 +73,7 @@ public class SongController {
 		try {
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("song_uploadForm");
-			mav.addObject("song", new Song(-1, "", ((User) httpSession.getAttribute("sessionUser")).getCredentials().getUsername(), "", "", "", "", -1));
+			mav.addObject("song", new Song(-1, "", ((SessionData) httpSession.getAttribute("sessionData")).getUsername(), "", "", "", "", -1));
 			return mav;
 		} catch (Exception e) {
 			return new ModelAndView("error");
@@ -95,7 +95,7 @@ public class SongController {
 			if (result.hasErrors()) {
 				return this.handleDisplayUploadForm();
 			}
-			song.setUsers_id(((User) httpSession.getAttribute("sessionUser")).getId());
+			song.setUsers_id(((SessionData) httpSession.getAttribute("sessionData")).getUsers_id());
 			if (songBusinessService.uploadSong(song) != 1) {
 				ModelAndView mav = new ModelAndView();
 				mav.setViewName("error");
@@ -112,7 +112,7 @@ public class SongController {
 		try {
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("song_browseMyUploads");
-			mav.addObject("songs", songBusinessService.getSongsByUsersId(new Song(-1, "", "", "", "", "", "", ((User) httpSession.getAttribute("sessionUser")).getId())));
+			mav.addObject("songs", songBusinessService.getSongsByUsersId(new Song(-1, "", "", "", "", "", "", ((SessionData) httpSession.getAttribute("sessionData")).getUsers_id())));
 			mav.addObject("viewSong", new Song());
 			return mav;
 		} catch (Exception e) {
@@ -120,24 +120,20 @@ public class SongController {
 		}
 	}
 
-	@PostMapping("/song")
+	@GetMapping("/song")
 	public ModelAndView handleDisplaySong(@ModelAttribute("song") Song song) {
 		try {
 			song = songBusinessService.getSong(song);
 			ModelAndView mav = new ModelAndView();
 			mav.addObject("song", song);
-			if (((User) httpSession.getAttribute("sessionUser")).getId() == song.getUsers_id()) {
-				mav.setViewName("song_viewMyUpload");
-			} else {
-				mav.setViewName("song_view");
-			}
+			mav.setViewName("song_view");
 			return mav;
 		} catch (Exception e) {
 			return new ModelAndView("error");
 		}
 	}
 
-	@PostMapping("/edit")
+	@GetMapping("/edit")
 	public ModelAndView handleDisplayEditForm(@ModelAttribute("song") Song song) {
 		try {
 			ModelAndView mav = new ModelAndView();
@@ -168,7 +164,7 @@ public class SongController {
 		}
 	}
 
-	@PostMapping("/delete")
+	@GetMapping("/delete")
 	public ModelAndView handleDisplayDeleteForm(@ModelAttribute("song") Song song) {
 		try {
 			ModelAndView mav = new ModelAndView();

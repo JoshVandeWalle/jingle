@@ -1,9 +1,6 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
     http://www.springframework.org/schema/aop
@@ -15,23 +12,18 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<context:component-scan
-		base-package="com.jingle" />
+	<context:component-scan base-package="com.jingle" />
 	<context:annotation-config />
 	<mvc:annotation-driven />
 
-	<mvc:resources mapping="/resources/**"
-		location="/WEB-INF/resources/" />
+	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" />
 
-	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
-		<property name="prefix" value="/WEB-INF/pages/{1}" /> <property name="suffix" 
-		value=".jsp" /> </bean> -->
+	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> <property name="prefix" value="/WEB-INF/pages/{1}" 
+		/> <property name="suffix" value=".jsp" /> </bean> -->
 
 	<!-- Tiles View Resolver -->
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" />
-	<bean id="tilesConfigurer"
-		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" />
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<property name="definitions">
 			<list>
 				<value>/WEB-INF/layouts/layouts.xml</value>
@@ -41,25 +33,19 @@
 	</bean>
 
 	<!-- MySQL Data Source -->
-	<bean id="dataSource" destroy-method="close"
-		class="org.apache.commons.dbcp2.BasicDataSource">
-		<property name="driverClassName"
-			value="com.mysql.jdbc.Driver" />
-		<property name="url"
-			value="jdbc:mysql://localhost:3306/jingle" />
+	<bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/jingle" />
 		<property name="username" value="root" />
 		<property name="password" value="root" />
 	</bean>
 
 	<!-- Setup Transaction Manager () -->
 	<aop:config>
-		<aop:pointcut id="allServiceMethods"
-			expression="execution(* com.jingle.business.*Interface.*(..))" />
-		<aop:advisor advice-ref="txAdvice"
-			pointcut-ref="allServiceMethods" />
+		<aop:pointcut id="allServiceMethods" expression="execution(* com.jingle.business.*Interface.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="allServiceMethods" />
 	</aop:config>
-	<bean id="txManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	<tx:advice id="txAdvice" transaction-manager="txManager">
@@ -71,36 +57,28 @@
 	</tx:advice>
 
 	<!-- Application Spring Beans -->
-	
+
 	<!-- Rest Services -->
-	<bean id="songService"
-		class="com.jingle.service.SongService">
-		<property name="songBusinessService"
-			ref="songBusinessService" />
-	</bean>
-	
-	<!-- Controllers -->
-	<bean id="userController"
-		class="com.jingle.controller.UserController">
-		<property name="userBusinessService"
-			ref="userBusinessService" />
+	<bean id="songService" class="com.jingle.service.SongService">
+		<property name="songBusinessService" ref="songBusinessService" />
 	</bean>
 
-	<bean id="songController"
-		class="com.jingle.controller.SongController">
-		<property name="songBusinessService"
-			ref="songBusinessService" />
+	<!-- Controllers -->
+	<bean id="userController" class="com.jingle.controller.UserController">
+		<property name="userBusinessService" ref="userBusinessService" />
+	</bean>
+
+	<bean id="songController" class="com.jingle.controller.SongController">
+		<property name="songBusinessService" ref="songBusinessService" />
 	</bean>
 
 	<!-- Business Services -->
-	<bean id="userBusinessService"
-		class="com.jingle.business.UserBusinessService" scope="session">
+	<bean id="userBusinessService" class="com.jingle.business.UserBusinessService" scope="session">
 		<aop:scoped-proxy proxy-target-class="false" />
 		<property name="userDataService" ref="userDataService" />
 	</bean>
 
-	<bean id="songBusinessService"
-		class="com.jingle.business.SongBusinessService" scope="session">
+	<bean id="songBusinessService" class="com.jingle.business.SongBusinessService" scope="session">
 		<aop:scoped-proxy proxy-target-class="false" />
 		<property name="songDataService" ref="songDataService" />
 	</bean>
@@ -110,8 +88,7 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<bean id="credentialsDataService"
-		class="com.jingle.data.CredentialsDataService">
+	<bean id="credentialsDataService" class="com.jingle.data.CredentialsDataService">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 

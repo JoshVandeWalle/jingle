@@ -1,5 +1,13 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<h2>My Profile</h2>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<c:choose>
+	<c:when test="${user.id == sessionData.users_id}">
+		<h2>My Profile</h2>
+	</c:when>
+	<c:otherwise>
+		<h2>${user.credentials.username}'s Profile</h2>
+	</c:otherwise>
+</c:choose>
 <div class="page-content page-container" id="page-content">
 	<div class="padding">
 		<div class="row container d-flex justify-content-center">
@@ -61,3 +69,12 @@
 		</div>
 	</div>
 </div>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<c:choose>
+	<c:when test="${user.id == sessionData.users_id}">
+		<form:form method="GET" action="edit" modelAttribute="user">
+			<form:input type="hidden" path="id" value="${user.id}" />
+			<button type="submit" class="btn btn-danger">Edit</button>
+		</form:form>
+	</c:when>
+</c:choose>

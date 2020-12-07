@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jingle.business.UserBusinessInterface;
 import com.jingle.model.Credentials;
+import com.jingle.model.SessionData;
 import com.jingle.model.User;
 
 /**
@@ -40,7 +41,7 @@ public class UserController {
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("user_login");
 			mav.addObject("credentials", new Credentials());
-			httpSession.removeAttribute("sessionUser");
+			httpSession.removeAttribute("sessionData");
 			return mav;
 		} catch (Exception e) {
 			return new ModelAndView("error");
@@ -63,7 +64,8 @@ public class UserController {
 			if (user == null) {
 				return new ModelAndView("user_login", "user", user);
 			}
-			httpSession.setAttribute("sessionUser", user);
+			SessionData sessionData = new SessionData(user.getId(), user.getFirstName(), user.getCredentials_id(), user.getCredentials().getUsername(), user.getCredentials().getRole());
+			httpSession.setAttribute("sessionData", sessionData);
 			return new ModelAndView("home", "credentials", user.getCredentials());
 		} catch (Exception e) {
 			return new ModelAndView("error");
@@ -103,15 +105,58 @@ public class UserController {
 			return new ModelAndView("error");
 		}
 	}
-	
-	@GetMapping("/profile")
-	public ModelAndView handleDisplayProfilePage() {
+
+	@GetMapping("/myProfile")
+	public ModelAndView handleDisplayMyProfilePage() {
 		try {
+			User user = userBusinessService.getUser(new User(((SessionData) httpSession.getAttribute("sessionData")).getUsers_id(), "", "", "", "", ((SessionData) httpSession.getAttribute("sessionData")).getCredentials_id()));
 			ModelAndView mav = new ModelAndView();
-			mav.setViewName("user_myProfile");
-			mav.addObject("user", userBusinessService.getUser((User) httpSession.getAttribute("sessionUser")));
+			mav.addObject("user", user);
+			mav.setViewName("user_profile");
 			return mav;
 		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
+	}
+
+	@GetMapping("/profile")
+	public ModelAndView handleDisplayProfilePage(@ModelAttribute("user") User user) {
+		try {
+			user = userBusinessService.getUser(user);
+			ModelAndView mav = new ModelAndView();
+			mav.addObject("user", user);
+			mav.setViewName("user_profile");
+			return mav;
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
+	}
+
+	@GetMapping("/edit")
+	public ModelAndView handleDisplayEditForm(@ModelAttribute("user") User user) {
+		try {
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("user_editForm");
+			mav.addObject("user", userBusinessService.getUser(user));
+			return mav;
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
+	}
+
+	@PostMapping("/handleEdit")
+	public ModelAndView handleEditUser(@Valid @ModelAttribute("user") User user, BindingResult result) {
+		try {
+			if (result.hasErrors()) {
+				return this.handleDisplayEditForm(user);
+			}
+			if (userBusinessService.editUser(user) != 1) {
+				return this.handleDisplayEditForm(user);
+			}
+			return this.handleDisplayProfilePage(user);
+		}
+
+		catch (Exception e) {
 			return new ModelAndView("error");
 		}
 	}

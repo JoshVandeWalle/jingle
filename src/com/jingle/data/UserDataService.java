@@ -59,7 +59,7 @@ public class UserDataService implements UserDataInterface {
 			return null;
 		}
 
-		return new User(srs.getInt("id"), srs.getString("firstname"), srs.getString("lastname"), srs.getString("email"), srs.getString("phone"), user.getCredentials());
+		return new User(srs.getInt("id"), srs.getString("firstname"), srs.getString("lastname"), srs.getString("email"), srs.getString("phone"), srs.getInt("credentials_id"));
 	}
 
 	/**

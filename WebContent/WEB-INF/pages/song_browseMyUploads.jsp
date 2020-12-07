@@ -15,7 +15,7 @@
 	<tbody>
 		<c:forEach var="song" items="${songs}">
 			<tr onclick=goToSong(${song.id})>
-				<form:form id="${song.id}" method="POST" action="song" modelAttribute="viewSong">
+				<form:form id="${song.id}" method="GET" action="song" modelAttribute="viewSong">
 					<form:input type="hidden" path="id" value="${song.id}" />
 				</form:form>
 				<td><c:out value="${song.title}" /></td>

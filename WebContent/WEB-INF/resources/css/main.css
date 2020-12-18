@@ -18,57 +18,6 @@
 	color: purple;
 }
 
-.welcome-msg {
-	float: left !important;
-	color: white;
-	font-size: 20px;
-	font-weight: bold;
-	padding-top: 10px !important;
-}
-
-li {
-	float: right;
-}
-
-ul {
-	background-color: red;
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-}
-
-li a {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-}
-
-li a:hover {
-	background-color: pink;
-	cursor: pointer;
-}
-
-.main-table {
-	width: 80% !important;
-	border: 2px solid black !important;
-}
-
-.main-table th, td {
-	text-align: left;
-	padding: 8px;
-}
-
-.main-table tr:nth-child(even) {
-	background-color: #f2f2f2;
-}
-
-.padding {
-	padding: 1rem !important
-}
-
 .user-card-full {
 	overflow: hidden
 }

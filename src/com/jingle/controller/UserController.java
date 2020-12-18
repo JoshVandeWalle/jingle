@@ -19,7 +19,7 @@ import com.jingle.model.User;
 
 /**
  * @author Josh Van de Walle
- * The UserController manages behavior related to user CRUD operations including login and registration
+ * The UsergController manages behavior related to users and credentials
  */
 
 @Controller
@@ -35,6 +35,51 @@ public class UserController {
 		this.userBusinessService = userBusinessService;
 	}
 
+	/**
+	 * Redirects to register page.
+	 * 
+	 * @return ModelAndView	register page + credentials + user mav
+	 */
+	@GetMapping("/register")
+	public ModelAndView handleDisplayRegistrationForm() {
+		try {
+			ModelAndView mav = new ModelAndView();
+			mav.setViewName("user_registration");
+			mav.addObject("user", new User());
+			mav.addObject("credentials", new Credentials());
+			return mav;
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
+	}
+
+	/**
+	 * Handles register and redirects to login.
+	 * 
+	 * @param credentials 	Credentials the credentials to attempt to login
+	 * @param result 		the validation result
+	 * @return ModelAndView	login + credentials mav
+	 */
+	@PostMapping("/handleRegister")
+	public ModelAndView handleRegisterUser(@Valid @ModelAttribute("user") User user, BindingResult result) {
+		try {
+			if (result.hasErrors()) {
+				return new ModelAndView("user_registration", "user", user);
+			}
+			if (userBusinessService.registerUser(user) != 1) {
+				return new ModelAndView("user_registration", "user", user);
+			}
+			return new ModelAndView("user_login", "credentials", user.getCredentials());
+		} catch (Exception e) {
+			return new ModelAndView("error");
+		}
+	}
+
+	/**
+	 * Redirects to login page.
+	 * 
+	 * @return ModelAndView	login page + credentials mav
+	 */
 	@GetMapping("/login")
 	public ModelAndView handleDisplayLoginForm() {
 		try {
@@ -47,12 +92,14 @@ public class UserController {
 			return new ModelAndView("error");
 		}
 	}
-
+	
 	/**
-	 * this method manages behavior related to logging-in
-	 * @param credentials Credentials the credentials to attempt to login
-	 * @param result the validation result
-	 * @return ModelAndView the appropriate view and model combo
+	 * Handles login and redirects to home.
+	 * Sets the HTTP session variables.
+	 * 
+	 * @param credentials 	Credentials the credentials to attempt to login
+	 * @param result 		the validation result
+	 * @return ModelAndView	home + credentials mav
 	 */
 	@PostMapping("/handleLogin")
 	public ModelAndView handleLoginUser(@Valid @ModelAttribute("credentials") Credentials credentials, BindingResult result) {
@@ -72,40 +119,11 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/register")
-	public ModelAndView handleDisplayRegistrationForm() {
-		try {
-			ModelAndView mav = new ModelAndView();
-			mav.setViewName("user_registration");
-			mav.addObject("user", new User());
-			mav.addObject("credentials", new Credentials());
-			return mav;
-		} catch (Exception e) {
-			return new ModelAndView("error");
-		}
-	}
-
 	/**
-	 * this method manages behavior related to registration
-	 * @param user User the user to attempt to register
-	 * @param result the validation result
-	 * @return ModelAndView the appropriate view and model combo
+	 * Redirects to profile page.
+	 * 
+	 * @return ModelAndView	profile page + user mav
 	 */
-	@PostMapping("/handleRegister")
-	public ModelAndView handleRegisterUser(@Valid @ModelAttribute("user") User user, BindingResult result) {
-		try {
-			if (result.hasErrors()) {
-				return new ModelAndView("user_registration", "user", user);
-			}
-			if (userBusinessService.registerUser(user) != 1) {
-				return new ModelAndView("user_registration", "user", user);
-			}
-			return new ModelAndView("user_login", "credentials", user.getCredentials());
-		} catch (Exception e) {
-			return new ModelAndView("error");
-		}
-	}
-
 	@GetMapping("/myProfile")
 	public ModelAndView handleDisplayMyProfilePage() {
 		try {
@@ -119,6 +137,12 @@ public class UserController {
 		}
 	}
 
+	/**
+	 * Redirects to profile page.
+	 * 
+	 * @param user 			User to view
+	 * @return ModelAndView	profile + user mav
+	 */
 	@GetMapping("/profile")
 	public ModelAndView handleDisplayProfilePage(@ModelAttribute("user") User user) {
 		try {
@@ -132,6 +156,11 @@ public class UserController {
 		}
 	}
 
+	/**
+	 * Redirects to edit page.
+	 * 
+	 * @return ModelAndView	edit page + user mav
+	 */
 	@GetMapping("/edit")
 	public ModelAndView handleDisplayEditForm(@ModelAttribute("user") User user) {
 		try {
@@ -144,6 +173,13 @@ public class UserController {
 		}
 	}
 
+	/**
+	 * Handles edit and redirects to profile.
+	 * 
+	 * @param user 			User to edit
+	 * @param result 		the validation result
+	 * @return ModelAndView	profile + user mav
+	 */
 	@PostMapping("/handleEdit")
 	public ModelAndView handleEditUser(@Valid @ModelAttribute("user") User user, BindingResult result) {
 		try {

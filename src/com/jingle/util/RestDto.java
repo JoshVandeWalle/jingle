@@ -2,6 +2,10 @@ package com.jingle.util;
 
 import java.util.List;
 
+/**
+ * @author Josh Van de Walle
+ */
+
 public class RestDto<T> {
 	private int code;
 	private String message;

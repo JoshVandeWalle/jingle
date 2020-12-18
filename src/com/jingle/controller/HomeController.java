@@ -6,13 +6,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * @author Josh Van de Walle
- * The UserController manages behavior related to user CRUD operations including login and registration
+ * @author Henry Harvey
+ * The HomeController manages behavior related to the home page
  */
 
 @Controller
 @RequestMapping("/home")
 public class HomeController {
+
+	/**
+	 * Redirects to home page.
+	 * 
+	 * @return ModelAndView	home mav
+	 */
 	@GetMapping(value = { "/" })
 	public ModelAndView handleDisplayHomePage() {
 		try {

@@ -14,16 +14,16 @@
 	</thead>
 	<tbody>
 		<c:forEach var="song" items="${songs}">
-			<tr onclick=goToSong(${song.id})>
+			<tr>
 				<form:form id="${song.id}" method="GET" action="song" modelAttribute="viewSong">
 					<form:input type="hidden" path="id" value="${song.id}" />
 				</form:form>
 				<td><c:out value="${song.title}" /></td>
-				<td><c:out value="${song.artist}" /></td>
-				<td><c:out value="${song.album}" /></td>
-				<td><c:out value="${song.year}" /></td>
-				<td><c:out value="${song.length}" /></td>
-				<td><c:out value="${song.genre}" /></td>
+				<td onclick=goToSong(${song.id})><c:out value="${song.artist}" /></td>
+				<td onclick=goToSong(${song.id})><c:out value="${song.album}" /></td>
+				<td onclick=goToSong(${song.id})><c:out value="${song.year}" /></td>
+				<td onclick=goToSong(${song.id})><c:out value="${song.length}" /></td>
+				<td onclick=goToSong(${song.id})><c:out value="${song.genre}" /></td>
 			</tr>
 		</c:forEach>
 	</tbody>
@@ -35,7 +35,9 @@
 
 <script>
 	$(document).ready(function() {
-		$('#songs').DataTable();
+		$('#songs').DataTable( {
+		    responsive: true
+		} );
 	});
 	
 	function goToSong(id) {

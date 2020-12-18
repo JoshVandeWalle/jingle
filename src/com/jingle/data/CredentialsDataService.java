@@ -100,7 +100,7 @@ public class CredentialsDataService implements CredentialsDataInterface {
 	 * Add each credentials to list. 
 	 * Return list. 
 	 * 
-	 * @return List<Credentials> 	list of all credentials
+	 * @return List 	list of all credentials
 	 */
 	public List<Credentials> readAll() {
 		String sql = "SECELCT * FROM credentials";

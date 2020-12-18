@@ -117,7 +117,7 @@ public class SongController {
 	/**
 	 * Redirects to song page.
 	 * 
-	 * @param user 			Song to view
+	 * @param song 			Song to view
 	 * @return ModelAndView	view song + song mav
 	 */
 	@GetMapping("/song")
@@ -137,6 +137,7 @@ public class SongController {
 	/**
 	 * Redirects to edit page.
 	 * 
+	 * @param song 			Song to edit
 	 * @return ModelAndView	edit page + song mav
 	 */
 	@GetMapping("/edit")
@@ -180,6 +181,7 @@ public class SongController {
 	/**
 	 * Redirects to delete page.
 	 * 
+	 * @param song 			Song to delete
 	 * @return ModelAndView	delete page + song mav
 	 */
 	@GetMapping("/delete")
@@ -198,7 +200,6 @@ public class SongController {
 	 * Handles delete and redirects to uploads.
 	 * 
 	 * @param song 			song to delete
-	 * @param result 		the validation result
 	 * @return ModelAndView	uploads page + list of songs + song mav
 	 */
 	@PostMapping("/handleDelete")

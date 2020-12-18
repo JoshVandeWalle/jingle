@@ -89,7 +89,7 @@ public class UserDataService implements UserDataInterface {
 	 * Add each user to list. 
 	 * Return list. 
 	 * 
-	 * @return List<User> 	list of all users
+	 * @return List 	list of all users
 	 */
 	public List<User> readAll() {
 		String sql = "SECELCT * FROM users";

@@ -97,7 +97,7 @@ public class UserBusinessService implements UserBusinessInterface {
 	 * For each user, set its credentials with credentialsDataService read. 
 	 * Return all users. 
 	 * 
-	 * @return List<>	list of all users
+	 * @return List	list of all users
 	 */
 	public List<User> getAllUsers() {
 

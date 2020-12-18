@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.jingle.business"},{"l":"com.jingle.controller"},{"l":"com.jingle.data"},{"l":"com.jingle.model"},{"l":"com.jingle.service"},{"l":"com.jingle.util"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.jingle.controller"}]

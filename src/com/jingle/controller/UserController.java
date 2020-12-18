@@ -56,7 +56,7 @@ public class UserController {
 	/**
 	 * Handles register and redirects to login.
 	 * 
-	 * @param credentials 	Credentials the credentials to attempt to login
+	 * @param user 			user to attempt to login
 	 * @param result 		the validation result
 	 * @return ModelAndView	login + credentials mav
 	 */

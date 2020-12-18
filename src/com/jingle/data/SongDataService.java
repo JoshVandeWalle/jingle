@@ -82,7 +82,7 @@ public class SongDataService implements SongDataInterface {
 	 * Add each song to list. 
 	 * Return list. 
 	 * 
-	 * @return List<Song>	List of all songs
+	 * @return List	List of all songs
 	 */
 	public List<Song> readAll() {
 		String sql = "SELECT * FROM songs";
